@@ -1,0 +1,8 @@
+{
+  "name": "study-assistant",
+  "description": "Assistente de estudos para AWS AI Practitioner AIF-C01",
+  "resources": [
+    "00-visao-geral-prova.md",
+    ".kiro/steering.md"
+  ]
+}
