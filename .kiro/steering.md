@@ -41,10 +41,47 @@ Data da prova: 28/09/2026.
 4. Diretrizes para IA Responsável — 14%
 5. Segurança, Conformidade e Governança — 14%
 
-## Progresso
-- [ ] Domínio 1
-- [ ] Domínio 2
-- [ ] Domínio 3
-- [ ] Domínio 4
-- [ ] Domínio 5
-- [ ] Simulados finais
+## Progresso Detalhado
+
+### Domínio 1 — Fundamentos de IA e ML (20%)
+- [x] 01 - Tipos de Machine Learning
+- [ ] 02 - Ciclo de Vida de ML (ML Pipeline)
+- [ ] 03 - Conceitos Fundamentais (overfitting, underfitting, bias, variance)
+- [ ] 04 - Métricas de Avaliação (acurácia, precisão, recall, F1, AUC-ROC)
+- [ ] 05 - Tipos de Tarefas (classificação, regressão, clustering, anomalias)
+- [ ] 06 - Serviços AWS de ML
+- [ ] Mini-simulado Domínio 1
+
+### Domínio 2 — Fundamentos de IA Generativa (24%)
+- [ ] 01 - Foundation Models e LLMs
+- [ ] 02 - Arquitetura Transformer
+- [ ] 03 - Conceitos de LLMs (tokens, context window, temperature, alucinações)
+- [ ] 04 - Prompt Engineering (zero-shot, few-shot, chain-of-thought)
+- [ ] 05 - Serviços AWS (Bedrock, Titan, Q, PartyRock)
+- [ ] Mini-simulado Domínio 2
+
+### Domínio 3 — Aplicações de Foundation Models (28%)
+- [ ] 01 - Amazon Bedrock (funcionalidades, modelos disponíveis)
+- [ ] 02 - RAG (Retrieval-Augmented Generation)
+- [ ] 03 - Fine-tuning vs Prompt Engineering vs RAG
+- [ ] 04 - Agents (Bedrock Agents, Lambda, ações)
+- [ ] 05 - Casos de uso empresariais e otimização de modelos
+- [ ] Mini-simulado Domínio 3
+
+### Domínio 4 — Diretrizes para IA Responsável (14%)
+- [ ] 01 - Princípios de IA Responsável da AWS
+- [ ] 02 - Viés em IA e mitigação
+- [ ] 03 - Explicabilidade e interpretabilidade
+- [ ] 04 - Guardrails, human-in-the-loop e AI Service Cards
+- [ ] Mini-simulado Domínio 4
+
+### Domínio 5 — Segurança, Conformidade e Governança (14%)
+- [ ] 01 - Segurança de dados em IA (criptografia, VPC, isolamento)
+- [ ] 02 - IAM e controle de acesso para serviços de IA
+- [ ] 03 - Conformidade e privacidade (LGPD, GDPR, PII)
+- [ ] 04 - Governança de modelos (registry, lineage, monitoramento)
+- [ ] Mini-simulado Domínio 5
+
+### Simulados Finais
+- [ ] Simulado 1 (65 questões)
+- [ ] Simulado 2 (65 questões)
