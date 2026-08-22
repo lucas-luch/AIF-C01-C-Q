@@ -37,6 +37,7 @@ Viés (bias) em sistemas de IA é um tema recorrente na prova. Você precisa ent
 - Balancear datasets por grupos demográficos
 - Remover features que são proxies de atributos protegidos
 - Auditar a composição dos dados
+- **Análise de qualidade do rótulo** — verificar se anotações estão corretas e consistentes
 
 ### Durante treinamento
 - Regularização de fairness (penalizar predições desiguais)
@@ -47,11 +48,75 @@ Viés (bias) em sistemas de IA é um tema recorrente na prova. Você precisa ent
 - Avaliar métricas por subgrupo (não apenas global)
 - Comparar performance entre grupos demográficos
 - Ajustar thresholds por grupo se necessário
+- **Análise de subgrupos** — avaliar performance em cada segmento demográfico separadamente
 
 ### Em produção
 - Monitoramento contínuo de fairness metrics
 - Alertas quando disparidade excede limites
 - Pipeline de re-treinamento quando drift é detectado
+- **Auditorias humanas** — revisão periódica dos outputs por especialistas humanos para identificar padrões de viés que métricas automáticas podem não capturar
+
+---
+
+## Auditorias Humanas
+
+Revisões periódicas feitas por pessoas qualificadas para avaliar se o sistema de IA está operando de forma justa.
+
+| Aspecto | Descrição |
+|---------|-----------|
+| **O que é** | Revisão manual de amostras de outputs/decisões por especialistas |
+| **Quando usar** | Periodicamente em produção, antes de deploy, após mudanças significativas |
+| **Quem faz** | Especialistas em fairness, representantes dos grupos afetados, equipe de compliance |
+| **O que busca** | Padrões de discriminação, estereótipos, erros sistemáticos que métricas não capturam |
+| **Ferramenta AWS** | Amazon Augmented AI (A2I) para fluxos de revisão; SageMaker Clarify para análise quantitativa |
+
+> **DICA PARA A PROVA:** Se a questão menciona "detectar viés que métricas automáticas não capturam" ou "revisão periódica de fairness", a resposta envolve auditorias humanas.
+
+---
+
+## Análise de Subgrupos
+
+Avaliar performance e fairness do modelo **separadamente para cada grupo demográfico** relevante, em vez de apenas métricas globais.
+
+### Por que análise global não é suficiente
+
+| Situação | Métrica global | Realidade por subgrupo |
+|----------|---------------|----------------------|
+| Modelo de crédito com 85% de acurácia | Parece bom | 95% para homens, 60% para mulheres |
+| Detector facial com 99% de precisão | Excelente | 99.5% pele clara, 85% pele escura |
+| Modelo de recrutamento "neutro" | Sem viés aparente | Recomenda 3x mais homens para cargos técnicos |
+
+### Como fazer
+- Definir subgrupos relevantes (gênero, raça, idade, região, etc.)
+- Calcular métricas (accuracy, precision, recall, F1) para cada subgrupo
+- Comparar disparidades entre subgrupos
+- Ferramenta: **SageMaker Clarify** (suporta análise por subgrupo nativamente)
+
+---
+
+## Efeitos do Viés e da Variância
+
+O Exam Guide pede descrever efeitos em: grupos demográficos, imprecisão, overfitting e underfitting.
+
+### Efeitos em grupos demográficos
+
+| Efeito | Descrição | Consequência real |
+|--------|-----------|------------------|
+| **Performance desigual** | Modelo funciona pior para grupos sub-representados | Grupo minoritário recebe decisões piores |
+| **Exclusão** | Modelo não reconhece/atende certo grupo | Sistema é inutilizável para parte da população |
+| **Discriminação amplificada** | Modelo amplifica padrões discriminatórios dos dados | Reforça desigualdades existentes |
+| **Dano à confiança** | Grupos afetados perdem confiança no sistema | Adoção reduzida, risco reputacional |
+
+### Relação com overfitting e underfitting
+
+| Problema | Conexão com viés |
+|----------|-----------------|
+| **Overfitting** | Modelo memoriza padrões do grupo majoritário — funciona bem para ele mas generaliza mal para grupos menores |
+| **Underfitting** | Modelo não captura a complexidade dos padrões de grupos sub-representados (poucos dados para aprender) |
+| **Variância alta** | Modelo é instável para grupos com poucos dados — previsões inconsistentes |
+| **Bias alto** | Suposições simplificadoras do modelo afetam desproporcionalmente grupos que não se encaixam no "padrão" assumido |
+
+> **DICA PARA A PROVA:** Se a questão conecta "modelo funciona mal para um subgrupo" + "dados desbalanceados", pense em: viés de seleção (dados) + possível overfitting para o grupo majoritário. Solução: dados mais representativos + análise de subgrupos.
 
 ---
 

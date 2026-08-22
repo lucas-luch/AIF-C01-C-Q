@@ -1,140 +1,136 @@
-# Princípios de IA Responsável da AWS
+# Princípios de IA Responsável
 
 ## Visão Geral
 
-A AWS define princípios para uso ético e seguro de IA. A prova AIF-C01 dedica 14% das questões a este tema — foco em identificar problemas e soluções.
+A prova AIF-C01 dedica 14% das questões a IA responsável. O Exam Guide exige identificar **características de IA responsável**, **riscos legais**, **práticas de escolha de modelo** e **características de datasets**.
 
 ---
 
-## Princípios Fundamentais
+## Características de IA Responsável
 
-| Princípio | Descrição |
-|-----------|-----------|
-| **Fairness (Equidade)** | IA não deve discriminar grupos ou indivíduos |
-| **Explainability (Explicabilidade)** | Deve ser possível entender por que o modelo tomou uma decisão |
-| **Transparency (Transparência)** | Ser claro sobre o uso de IA e suas limitações |
-| **Robustness (Robustez)** | Modelo funciona bem em condições variadas e adversas |
-| **Privacy (Privacidade)** | Proteger dados pessoais e sensíveis |
-| **Safety (Segurança)** | Prevenir danos e uso malicioso |
-| **Governance (Governança)** | Controles organizacionais e processos para IA |
+O Exam Guide lista explicitamente estas características:
 
----
+| Característica | Descrição |
+|---------------|-----------|
+| **Fairness (Equidade/Imparcialidade)** | IA não deve discriminar grupos ou indivíduos. Resultados devem ser equitativos independente de raça, gênero, idade, etc. |
+| **Inclusão (Inclusivity)** | Sistemas de IA devem funcionar para todos os usuários, incluindo pessoas de diferentes origens, habilidades, idiomas e contextos. |
+| **Robustez (Robustness)** | Modelo funciona bem em condições variadas, dados ruidosos e cenários adversariais. Não falha catastroficamente. |
+| **Segurança (Safety)** | Prevenir danos. Sistema não deve gerar conteúdo prejudicial nem ser usado para causar dano. |
+| **Veracidade (Veracity)** | Outputs devem ser factualmente corretos e confiáveis. O sistema não deve inventar ou distorcer informação. |
+| **Transparência (Transparency)** | Ser claro sobre o uso de IA, suas capacidades e limitações. Usuários devem saber quando interagem com IA. |
+| **Explicabilidade (Explainability)** | Deve ser possível entender por que o modelo tomou determinada decisão. |
+| **Privacidade (Privacy)** | Proteger dados pessoais e sensíveis. Minimizar coleta e uso de dados. |
 
-## Fairness e Equidade
-
-### O que é viés em IA
-Quando o modelo trata grupos de forma desigual ou produz resultados discriminatórios.
-
-### Fontes de viés
-| Tipo | Descrição | Exemplo |
-|------|-----------|---------|
-| Viés nos dados | Dados de treino não-representativos | Sistema treinado só com fotos de pessoas brancas |
-| Viés de seleção | Amostragem tendenciosa | Recrutar apenas de universidades de elite |
-| Viés de medição | Métricas inadequadas para certos grupos | Teste de crédito baseado em CEP (proxy racial) |
-| Viés de automação | Confiar demais no output da IA | Aceitar todas as decisões sem revisar |
-| Viés histórico | Dados refletem discriminações passadas | Dados de contratação com viés de gênero |
-
-### Mitigação
-- Dados de treino diversos e representativos
-- Auditorias regulares de fairness por grupo demográfico
-- Métricas de fairness (demographic parity, equalized odds)
-- Monitoramento contínuo em produção
-- **SageMaker Clarify** — ferramenta da AWS para detectar e medir viés
+> **DICA PARA A PROVA:** O Exam Guide usa os termos "viés, imparcialidade, inclusão, robustez, segurança e veracidade" juntos. Saiba diferenciá-los — imparcialidade é sobre equidade entre grupos; inclusão é sobre acessibilidade a todos; veracidade é sobre correção factual.
 
 ---
 
-## Explicabilidade e Interpretabilidade
+## Sustentabilidade e Impacto Ambiental
 
-### Diferença
-- **Interpretabilidade:** entender COMO o modelo funciona internamente
-- **Explicabilidade:** entender POR QUE uma decisão específica foi tomada
+O Exam Guide exige reconhecer **considerações ambientais e sustentabilidade** como práticas responsáveis na escolha de modelos.
 
-### Modelos "caixa-preta" vs interpretáveis
-| Tipo | Exemplos | Explicabilidade |
-|------|----------|----------------|
-| Interpretável | Regressão linear, Árvore de decisão | Alta — fácil ver as regras |
-| Caixa-preta | Redes neurais profundas, LLMs | Baixa — precisa de técnicas extras |
+### Por que é relevante
 
-### Técnicas de explicabilidade
-| Técnica | O que faz |
-|---------|-----------|
-| **Feature importance** | Quais variáveis mais influenciam as decisões |
-| **SHAP values** | Contribuição de cada feature para uma previsão específica |
-| **Partial Dependence Plots** | Como uma feature afeta a previsão isoladamente |
-| **Counterfactual explanations** | "Se X fosse diferente, a decisão mudaria?" |
+| Aspecto | Impacto |
+|---------|---------|
+| **Treinamento de FMs** | Consome enormes quantidades de energia (GPUs por semanas/meses) |
+| **Inferência** | Cada requisição consome recursos computacionais |
+| **Modelos maiores** | Mais parâmetros = mais energia por inferência |
+| **Escala** | Milhões de requisições/dia = impacto ambiental significativo |
 
-### Quando explicabilidade é crítica
-- Decisões de crédito (regulamentação)
-- Diagnósticos médicos
-- Decisões judiciais
-- Qualquer decisão que afete direitos de pessoas
+### Práticas responsáveis
 
-### Serviço AWS
-- **SageMaker Clarify** — gera explicações (SHAP) e feature importance
+| Prática | Como reduz impacto |
+|---------|-------------------|
+| **Usar modelo menor quando suficiente** | Menos energia por inferência |
+| **Model distillation** | Modelo menor com performance similar ao grande |
+| **Prompt caching** | Evita reprocessamento de tokens repetidos |
+| **Batch inference** | Otimiza uso de recursos (agrupa processamentos) |
+| **Escolher região com energia limpa** | Algumas regiões AWS usam mais energia renovável |
+| **Reutilizar modelos pré-treinados** | Evita custo ambiental de treinar do zero |
+
+> **DICA PARA A PROVA:** Se a questão menciona "considerações ambientais" ou "sustentabilidade" na escolha de modelo, a resposta envolve: usar modelo menor quando possível, evitar treinar do zero sem necessidade, e otimizar inferência.
 
 ---
 
-## Transparência
+## Riscos Legais de Trabalhar com IA Generativa
 
-### AWS AI Service Cards
-- Documentação pública de transparência para serviços de IA da AWS
-- Cada card descreve:
-  - Caso de uso pretendido
-  - Limitações conhecidas
-  - Métricas de performance e fairness
-  - Design choices
-  - Melhores práticas de uso
+O Exam Guide exige identificar riscos legais específicos.
 
-### Práticas de transparência
-- Informar usuários que estão interagindo com IA
-- Documentar limitações do modelo
-- Publicar relatórios de avaliação
-- Ser honesto sobre incertezas
+| Risco legal | Descrição | Exemplo |
+|-------------|-----------|---------|
+| **Violação de Propriedade Intelectual (IP)** | Modelo gera conteúdo que replica material protegido por copyright | LLM gera trecho de livro, código proprietário, ou imagem que replica obra de artista |
+| **Resultados tendenciosos (outputs com viés)** | Decisões automatizadas discriminam grupos protegidos | Sistema de crédito que nega mais a minorias, recrutamento que favorece um gênero |
+| **Perda de confiança do cliente** | Outputs incorretos, ofensivos ou inadequados danificam reputação | Chatbot que ofende clientes, sistema que dá informação falsa sobre saúde |
+| **Risco do usuário final** | Outputs incorretos levam o usuário a ações prejudiciais | Informação médica incorreta, conselho financeiro errado, instruções perigosas |
+| **Alucinações** | Modelo gera informação factualmente incorreta apresentada como verdade | Inventar referências, citar leis inexistentes, fabricar dados |
+
+### Mitigação de riscos legais
+
+| Risco | Mitigação |
+|-------|-----------|
+| Violação de IP | Guardrails, filtros de output, políticas de uso, disclaimers |
+| Viés/discriminação | SageMaker Clarify, auditorias de fairness, dados diversos |
+| Perda de confiança | Guardrails, testes extensivos, monitoring, human-in-the-loop |
+| Risco ao usuário | Disclaimers, human review para decisões críticas, limitação de escopo |
+| Alucinações | RAG, grounding check, Guardrails, confidence scoring |
+
+> **CUIDADO:** Estes riscos existem mesmo quando o modelo é "bom" — são riscos inerentes ao uso de IA generativa e devem ser gerenciados, não eliminados por completo.
 
 ---
 
-## Robustez e Segurança
+## Características de Datasets para IA Responsável
 
-### Robustez
-- Modelo funciona bem com dados ruidosos ou adversariais
-- Não falha catastroficamente com inputs inesperados
-- Performance consistente em diferentes contextos
+O Exam Guide exige identificar características de datasets que suportam IA responsável.
 
-### Segurança (Safety)
-- Prevenir geração de conteúdo prejudicial
-- Resistir a prompt injection e jailbreaks
-- Human-in-the-loop para decisões críticas
-- Guardrails para filtrar outputs indesejados
+| Característica | Descrição | Por que importa |
+|---------------|-----------|-----------------|
+| **Inclusão** | Dataset contém representação de diferentes grupos (gênero, raça, idade, região, idioma) | Modelo treinado em dados inclusivos funciona melhor para todos |
+| **Diversidade** | Variedade de cenários, contextos e condições nos dados | Evita que o modelo só funcione em um contexto estreito |
+| **Fontes com curadoria** | Dados vêm de fontes confiáveis e foram revisados | Reduz risco de dados incorretos, tendenciosos ou tóxicos contaminarem o modelo |
+| **Datasets balanceados** | Representação equilibrada entre classes/grupos | Evita que modelo favoreça grupo majoritário |
+
+### Problemas de datasets inadequados
+
+| Problema no dataset | Consequência no modelo |
+|--------------------|----------------------|
+| Sub-representação de grupo | Modelo performa mal para esse grupo |
+| Dados históricos com viés | Modelo reproduz e amplifica discriminação histórica |
+| Fontes não-curadas | Modelo pode aprender desinformação ou conteúdo tóxico |
+| Desbalanceamento extremo | Modelo ignora classe minoritária (prevê sempre a majoritária) |
+| Falta de diversidade regional/cultural | Modelo funciona apenas em um contexto específico |
+
+> **DICA PARA A PROVA:** Se a questão descreve "modelo funciona mal para um grupo demográfico específico", o problema geralmente é falta de representação/diversidade nos dados de treino.
+
+---
+
+## Ferramentas AWS para IA Responsável
+
+| Ferramenta | O que faz | Quando usar |
+|-----------|-----------|-------------|
+| **SageMaker Clarify** | Detecta viés (pre/post training), explica previsões (SHAP) | Análise de fairness, explicabilidade |
+| **SageMaker Model Monitor** | Monitora drift, qualidade e fairness em produção | Monitoramento contínuo pós-deploy |
+| **Amazon A2I** | Human-in-the-loop (revisão humana) | Decisões críticas, baixa confiança |
+| **Bedrock Guardrails** | Filtros de conteúdo, PII, grounding | Segurança de outputs de FMs |
+| **SageMaker Model Cards** | Documentar modelos (uso pretendido, limitações, métricas) | Governança de modelos customizados |
+| **AWS AI Service Cards** | Transparência de serviços de IA da AWS | Entender limitações/fairness de serviços AWS |
+| **Bedrock Model Evaluation** | Avaliar modelos em métricas de qualidade e segurança | Comparar modelos, avaliar safety/bias |
 
 ---
 
 ## Resumo para a Prova
 
-| Conceito | Ferramenta/Abordagem AWS |
-|----------|--------------------------|
-| Detectar viés em dados | SageMaker Clarify (pre-training bias) |
-| Detectar viés em modelos | SageMaker Clarify (post-training bias) |
-| Detectar viés em texto gerado (GenAI) | SageMaker Clarify (toxicity/bias em FMs) |
-| Explicar previsões | SageMaker Clarify (SHAP values) |
-| Filtrar conteúdo perigoso | Bedrock Guardrails |
-| Transparência sobre serviços | AWS AI Service Cards |
-| Revisão humana | Amazon Augmented AI (A2I) |
-| Monitorar fairness em produção | SageMaker Model Monitor |
+| Cenário | Resposta |
+|---------|----------|
+| "Modelo discrimina um grupo demográfico" | Viés → SageMaker Clarify (detectar) + dados diversos (mitigar) |
+| "Regulador exige justificar decisão ao cliente" | Explicabilidade → SageMaker Clarify (SHAP values) |
+| "Chatbot gera conteúdo ofensivo" | Segurança → Bedrock Guardrails |
+| "LLM inventa informações" | Veracidade → RAG + Guardrails grounding check |
+| "Modelo gera texto com copyright" | Risco de IP → Guardrails + políticas + disclaimers |
+| "Escolher modelo com menor impacto ambiental" | Sustentabilidade → modelo menor, distillation, caching |
+| "Dataset não representa minorias" | Inclusão/diversidade → coletar dados representativos |
+| "Modelo funciona mal para certo idioma" | Inclusão → treinar/avaliar com dados multilíngues |
+| "Monitorar fairness após deploy" | SageMaker Model Monitor |
+| "Documentar limitações do modelo" | SageMaker Model Cards / AI Service Cards |
 
 ---
-
-## Cenários de Prova — Como Aparecem
-
-| Cenário descrito | O que estão testando | Resposta |
-|-----------------|---------------------|----------|
-| "Regulador exige justificar negativa de crédito ao cliente" | Explicabilidade individual | SageMaker Clarify → SHAP values |
-| "Modelo de RH aprova mais homens que mulheres para promoção" | Viés pós-treinamento por subgrupo | SageMaker Clarify (post-training bias) |
-| "Chatbot gerou resposta com estereótipos raciais" | Conteúdo tóxico em GenAI | Bedrock Guardrails (content filter) + Red teaming preventivo |
-| "Empresa quer publicar limitações do modelo para clientes" | Transparência | AI Service Cards (serviços AWS) ou Model Cards (modelo próprio) |
-| "Modelo de diagnóstico com 70% de confiança — precisa de médico" | Human-in-the-loop | Amazon A2I com threshold de confiança |
-| "LLM inventa referências bibliográficas" | Alucinação | RAG + Guardrails (grounding check) |
-| "Modelo treinado só com dados de SP funciona mal em Manaus" | Viés de seleção | Coletar dados representativos de todas as regiões |
-
----
-
-*Próximo bloco: Viés em IA e mitigação*

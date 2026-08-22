@@ -74,22 +74,80 @@ A prova AIF-C01 apresenta cenários de negócio e pede que você escolha a **arq
 ## Métricas de Avaliação para GenAI
 
 ### Métricas Automáticas
-| Métrica | Mede | Caso de uso |
-|---------|------|-------------|
-| ROUGE | Sobreposição com referência (recall-oriented) | Resumos |
-| BLEU | Precisão de n-grams vs referência | Tradução |
-| BERTScore | Similaridade semântica via embeddings | Qualquer geração |
-| Perplexidade | Quão "surpreso" o modelo fica | Qualidade do modelo |
+| Métrica | Mede | Caso de uso | Limitação |
+|---------|------|-------------|-----------|
+| ROUGE | Sobreposição com referência (recall-oriented) | Resumos | Não captura qualidade semântica |
+| BLEU | Precisão de n-grams vs referência | Tradução | Sinônimos recebem pontuação baixa |
+| BERTScore | Similaridade semântica via embeddings | Geração geral | Depende do modelo de embeddings |
+| Perplexidade | Quão "surpreso" o modelo fica | Qualidade geral do modelo | Não garante qualidade de resposta |
 
 ### Avaliação Humana
 - Quando usar: qualidade subjetiva, criatividade, tom, factualidade
 - Mais cara e lenta, mas captura nuances que métricas automáticas perdem
-- Amazon Bedrock Model Evaluation suporta avaliação humana
+- Amazon Bedrock Model Evaluation suporta avaliação humana configurável
+
+### LLM-as-a-judge (LLM como Avaliador)
+
+Usar um LLM (geralmente mais capaz) para avaliar outputs de outro modelo seguindo critérios definidos.
+
+| Aspecto | Descrição |
+|---------|-----------|
+| **Quando usar** | Avaliação em escala, triagem antes de revisão humana |
+| **Vantagem** | Escalável, rápido, consistente |
+| **Limitação** | O LLM avaliador também pode errar, não substitui humano para decisões críticas |
+| **Serviço AWS** | Amazon Bedrock Model Evaluation (suporta LLM-as-judge) |
 
 ### Bedrock Model Evaluation
 - Comparar modelos lado a lado no seu caso de uso
-- Métricas automáticas + avaliação humana
-- Datasets customizados com seus exemplos reais
+- Métricas automáticas + avaliação humana + LLM-as-judge
+- Datasets customizados com exemplos reais
+
+---
+
+## Avaliação de Aplicações FM (RAG, Agents, Workflows)
+
+Avaliar uma **aplicação** construída com FM é diferente de avaliar o **modelo isolado**. A aplicação tem múltiplos componentes (retrieval, geração, pós-processamento, UX) que afetam o resultado final.
+
+### Diferença: modelo vs. aplicação
+
+| Aspecto | Avaliação do modelo | Avaliação da aplicação |
+|---------|--------------------|-----------------------|
+| Escopo | Output do modelo para um input | Resultado end-to-end para o usuário |
+| Inclui | Qualidade da geração isolada | Retrieval + geração + ferramentas + UX |
+| Métricas típicas | BLEU, ROUGE, BERTScore | Task completion, user satisfaction, latência |
+| Ferramenta | Bedrock Model Evaluation | Testes end-to-end, logging, feedback |
+
+### Métricas para aplicações
+
+| Métrica | O que avalia | Tipo |
+|---------|-------------|------|
+| **Groundedness** | Resposta é fiel ao contexto/fontes fornecidas? | Qualidade (RAG) |
+| **Factuality** | Resposta é factualmente correta? | Qualidade |
+| **Task completion rate** | % de tarefas que o sistema completa com sucesso | Negócio |
+| **User satisfaction** | Percepção de valor pelo usuário (NPS, CSAT) | Negócio |
+| **Cost per interaction** | Quanto custa cada interação com o sistema | Negócio |
+| **Latência end-to-end** | Tempo total de resposta para o usuário | Performance |
+| **Safety** | Output livre de conteúdo nocivo/tóxico? | Segurança |
+
+### Avaliação de RAG especificamente
+
+| O que avaliar | Métrica/abordagem |
+|---------------|------------------|
+| Qualidade do retrieval | Os chunks certos foram recuperados? (precision@k, recall@k) |
+| Groundedness | A resposta é fiel aos chunks recuperados? |
+| Completude | A resposta usa toda a informação relevante? |
+| Alucinações | O modelo inventou algo que não está nos chunks? |
+
+### Avaliação de Agents/Workflows
+
+| O que avaliar | Métrica/abordagem |
+|---------------|------------------|
+| Task completion | O agent completou a tarefa com sucesso? |
+| Eficiência | Quantas etapas/tools foram necessárias? |
+| Corretude de ações | As ações executadas foram corretas e na ordem certa? |
+| Recuperação de erros | O agent se recuperou adequadamente quando uma ação falhou? |
+
+> **DICA PARA A PROVA:** Se a questão pergunta "como avaliar uma aplicação RAG" → groundedness + task completion. Se pergunta "como avaliar um agent" → task completion + corretude de ações. Se pergunta "como avaliar o modelo" → BLEU/ROUGE/BERTScore ou avaliação humana.
 
 ---
 
@@ -133,6 +191,7 @@ A prova AIF-C01 apresenta cenários de negócio e pede que você escolha a **arq
 | "Modelo maior = sempre melhor" | Modelo maior = mais caro + mais lento. Se modelo menor resolve, é preferível | Modelo menor que atenda requisitos |
 | "Guardrails substitui system prompt" | Guardrails é camada adicional de proteção, não substitui instruções | Ambos juntos (prompt + guardrails) |
 | "Cache resolve todos os problemas de custo" | Cache só funciona para perguntas idênticas/repetidas | Depende do padrão de uso |
+| "RAG garante que não haverá alucinações" | RAG reduz significativamente mas NÃO elimina alucinações — modelo pode ignorar/extrapolar contexto | RAG reduz + Guardrails grounding + validação |
 
 ---
 

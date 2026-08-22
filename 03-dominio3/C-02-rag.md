@@ -73,12 +73,13 @@ Em vez de re-treinar o modelo, **buscar** a informação relevante no momento da
 
 Armazena embeddings e permite busca por similaridade.
 
-### Serviços AWS
+### Serviços AWS para Vector Database
 | Serviço | Tipo |
 |---------|------|
-| **Amazon OpenSearch Serverless** | Vector search gerenciado (default no Bedrock) |
-| **Amazon Aurora PostgreSQL** | pgvector extension |
-| **Amazon Neptune** | Graph + vector |
+| **Amazon OpenSearch Serverless** | Vector search gerenciado (padrão no Bedrock Knowledge Bases) |
+| **Amazon Aurora PostgreSQL** | Banco relacional com extensão pgvector |
+| **Amazon Neptune** | Banco de grafos com suporte a vetores |
+| **Amazon RDS para PostgreSQL** | PostgreSQL gerenciado com extensão pgvector |
 
 ### Como funciona a busca
 - Converte query em vetor
@@ -125,6 +126,12 @@ Armazena embeddings e permite busca por similaridade.
 
 ---
 
+## RAG e Alucinações — Importante
+
+> **CUIDADO:** RAG **reduz significativamente** alucinações ao fornecer contexto factual, mas **não garante eliminá-las**. O modelo pode ainda: ignorar o contexto fornecido, interpretar incorretamente, ou gerar informação que extrapola o contexto. Técnicas complementares incluem Guardrails com grounding check, validação de output e confidence scoring.
+
+---
+
 ## Resumo para a Prova
 
 | Conceito | O que lembrar |
@@ -137,6 +144,7 @@ Armazena embeddings e permite busca por similaridade.
 | Knowledge Bases | RAG gerenciado no Bedrock |
 | Quando usar RAG | Dados proprietários, informação atualizada, reduzir alucinações |
 | RAG vs Fine-tuning | RAG = dados novos sem re-treinar; Fine-tuning = mudar comportamento |
+| RAG e alucinações | RAG reduz mas NÃO elimina alucinações — complementar com grounding/guardrails |
 
 ---
 

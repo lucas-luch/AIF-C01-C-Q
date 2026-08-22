@@ -103,6 +103,99 @@ Treinar o FM com **grandes volumes de texto** do seu domínio (não pares input/
 
 ---
 
+## Model Distillation (Destilação de Modelo)
+
+### O que é
+Treinar um modelo **menor** (student) para imitar o comportamento de um modelo **maior** (teacher), obtendo performance próxima com custo e latência menores.
+
+### Como funciona
+1. Modelo grande (teacher) gera outputs de alta qualidade para um conjunto de exemplos
+2. Esses outputs são usados como dados de treinamento para o modelo menor (student)
+3. Modelo menor aprende a reproduzir o comportamento do maior
+
+### Quando usar
+- Modelo grande funciona bem mas é **caro demais** para produção em escala
+- Precisa de **latência menor** que o modelo grande oferece
+- Volume alto onde o **custo por token** é crítico
+- Tarefa específica que não requer capacidade completa do modelo grande
+
+### Trade-offs
+| Aspecto | Modelo grande (teacher) | Modelo destilado (student) |
+|---------|------------------------|---------------------------|
+| Qualidade | 100% | ~90-95% em tarefas específicas |
+| Custo por token | Alto | Significativamente menor |
+| Latência | Alta | Menor |
+| Generalização | Ampla | Mais limitada (focada na tarefa) |
+
+> **DICA PARA A PROVA:** Se a questão descreve "modelo funciona bem mas é caro/lento para produção" + "precisa manter qualidade similar", a resposta é model distillation.
+
+---
+
+## Transfer Learning (Aprendizado por Transferência)
+
+### O que é
+Reaproveitar o **conhecimento** que um modelo aprendeu em uma tarefa/domínio para aplicar em outra tarefa/domínio relacionado.
+
+### No contexto de FMs
+- Todo fine-tuning de FM é uma forma de transfer learning: o modelo transfere o conhecimento do pré-treinamento para a tarefa específica
+- O modelo pré-treinado já "sabe" linguagem, raciocínio, mundo — o fine-tuning transfere isso para o domínio alvo
+
+### Quando reconhecer na prova
+- "Aproveitar modelo existente para nova tarefa" → transfer learning
+- "Adaptar modelo pré-treinado para domínio específico" → transfer learning (via fine-tuning)
+- "Não treinar do zero" → transfer learning
+
+> **DICA PARA A PROVA:** Fine-tuning, continued pre-training e até prompt engineering com few-shot são formas de aproveitar o conhecimento transferido pelo pré-treinamento. Transfer learning é o conceito que embasa todas elas.
+
+---
+
+## Preparação de Dados para Fine-tuning
+
+O Exam Guide exige saber como preparar dados para ajuste fino de um FM.
+
+### Elementos da preparação
+
+| Elemento | Descrição | Por que importa |
+|----------|-----------|-----------------|
+| **Curadoria de dados** | Selecionar dados de alta qualidade e relevância | Garbage in, garbage out — dados ruins = modelo ruim |
+| **Governança** | Garantir conformidade, licenciamento e privacidade dos dados | Dados proprietários de terceiros podem ter restrições legais |
+| **Tamanho** | Volume adequado de exemplos (centenas a milhares para fine-tuning) | Pouco dado = underfitting; muito dado de baixa qualidade = ruído |
+| **Rotulagem** | Anotação correta dos pares input/output | Rótulos incorretos ensinam o modelo a errar |
+| **Representatividade** | Dados devem cobrir a diversidade de cenários reais | Se treinar só com exemplos de um tipo, modelo falha nos outros |
+| **RLHF** | Reinforcement Learning from Human Feedback — humanos classificam outputs para alinhar o modelo | Alinha o modelo com preferências humanas (útil, seguro, honesto) |
+
+### Processo típico
+
+```
+1. Definir tarefa/comportamento desejado
+        ↓
+2. Coletar dados representativos (diversidade de cenários)
+        ↓
+3. Curar e limpar (remover duplicatas, erros, dados sensíveis)
+        ↓
+4. Formatar (pares input/output no formato esperado pelo modelo)
+        ↓
+5. Validar qualidade (revisão humana de amostra)
+        ↓
+6. Dividir (treino/validação)
+        ↓
+7. Treinar e avaliar
+```
+
+### Riscos de preparação inadequada
+
+| Problema nos dados | Consequência no modelo |
+|-------------------|----------------------|
+| Viés nos exemplos | Modelo reproduz e amplifica vieses |
+| Dados desatualizados | Modelo aprende padrões obsoletos |
+| PII nos dados | Risco de o modelo memorizar e expor dados pessoais |
+| Baixa diversidade | Modelo funciona mal em cenários não representados |
+| Formato inconsistente | Modelo gera outputs inconsistentes |
+
+> **DICA PARA A PROVA:** Se a questão menciona "preparar dados para fine-tuning" e uma opção envolve "garantir diversidade e representatividade", essa tende a ser correta. Se menciona "riscos de fine-tuning", pense em viés nos dados e catastrophic forgetting.
+
+---
+
 ## Framework de Decisão
 
 ```

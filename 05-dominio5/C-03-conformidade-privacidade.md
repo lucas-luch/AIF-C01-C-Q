@@ -19,8 +19,40 @@ Conformidade (compliance) garante que o uso de IA respeita leis e regulamentaç�
 ### Implicações para IA
 - Dados pessoais em datasets de treino → consentimento necessário
 - Direito ao esquecimento → possibilidade de remover dados
-- Data residency → processar dados na região correta
+- Data residency → processar dados na região adequada
 - Explicabilidade → justificar decisões automatizadas (GDPR Art. 22)
+
+### LGPD — Nota importante
+
+> **CUIDADO:** A LGPD **não exige explicitamente** que dados de cidadãos brasileiros sejam armazenados no Brasil. O que a LGPD exige é **proteção adequada** dos dados pessoais, independentemente de onde estejam. Transferências internacionais são permitidas quando há garantias adequadas de proteção (ex: país com nível adequado de proteção, cláusulas contratuais padrão, consentimento específico). Na prática, muitas organizações optam por manter dados no Brasil (sa-east-1) como medida adicional de compliance, mas isso é uma decisão de negócio, não uma imposição legal absoluta.
+
+---
+
+## Estratégias de Governança de Dados
+
+O Exam Guide exige reconhecer estratégias de governança de dados para sistemas de IA.
+
+| Estratégia | Descrição | Ferramenta/Serviço AWS |
+|-----------|-----------|----------------------|
+| **Ciclos de vida de dados** | Definir estágios dos dados (criação → uso → arquivamento → exclusão) | S3 Lifecycle Policies |
+| **Logging (registro)** | Registrar acessos, modificações e uso dos dados | CloudTrail, CloudWatch Logs |
+| **Residência de dados** | Garantir que dados estão na região geográfica adequada | Escolha de região AWS, SCPs |
+| **Monitoramento** | Acompanhar uso, qualidade e segurança dos dados continuamente | CloudWatch, Macie, Config |
+| **Observação (Observability)** | Visibilidade completa sobre fluxo e processamento dos dados | CloudWatch, X-Ray, OpenSearch |
+| **Retenção** | Definir por quanto tempo dados são mantidos e quando excluir | S3 Lifecycle, DynamoDB TTL, políticas de retenção |
+
+### Ciclo de vida dos dados em IA
+
+```
+1. Coleta → consentimento, minimização, qualidade
+2. Armazenamento → criptografia, acesso restrito, região adequada
+3. Processamento → auditoria, linhagem, governança
+4. Uso (treino/inferência) → isolamento, privacidade
+5. Archival → retenção definida, acesso limitado
+6. Exclusão → deletion policies, direito ao esquecimento
+```
+
+> **DICA PARA A PROVA:** Se a questão menciona "definir por quanto tempo manter dados" → retenção. Se menciona "rastrear quem acessou dados" → logging. Se menciona "garantir dados na região certa" → residência. Se menciona "visibilidade do fluxo de dados" → observação/observability.
 
 ---
 
@@ -119,7 +151,7 @@ Portal self-service para acessar relatórios de compliance da AWS.
 | "Encontrar dados sensíveis no S3" | Amazon Macie |
 | "Relatórios de compliance da AWS" | AWS Artifact |
 | "Excluir dados após período" | S3 Lifecycle Policies |
-| "Dados precisam ficar no Brasil" | Escolher região sa-east-1 (São Paulo) |
+| "Dados precisam ficar no Brasil" | Considerar região sa-east-1 (São Paulo) — decisão de negócio, não obrigação absoluta da LGPD |
 | "Direito ao esquecimento" | Política de exclusão + lifecycle rules |
 | "Justificar decisão automatizada" | Explicabilidade (SageMaker Clarify) |
 

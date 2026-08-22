@@ -53,6 +53,12 @@ IAM (Identity and Access Management) controla **quem pode fazer o quê** nos ser
 - Controle adicional além do IAM
 - Permite governança sobre quais modelos a organização pode usar
 
+### AgentCore Identity — Identidade de Agentes
+- Para agentes que acessam sistemas externos, **AgentCore Identity** gerencia as credenciais e identidade do agente
+- Diferente de IAM (que controla acesso humano/serviço), AgentCore Identity controla **o que o agente pode acessar como entidade autônoma**
+- AgentCore Policy define **limites** do que o agente pode fazer
+- *(Detalhes completos no C-01 — Segurança de Dados)*
+
 ---
 
 ## Resource-based Policies

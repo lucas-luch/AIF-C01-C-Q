@@ -116,6 +116,108 @@ Documentação estruturada sobre um modelo ML customizado — quem criou, para q
 
 ---
 
+## Design Centrado no Ser Humano (Human-Centered Design)
+
+O Exam Guide exige reconhecer princípios de design centrado no ser humano para IA explicável.
+
+### Princípios
+
+| Princípio | Descrição | Exemplo |
+|-----------|-----------|---------|
+| **Mecanismos de feedback do usuário** | Usuários devem poder reportar problemas, corrigir outputs e expressar insatisfação | Botão "esta resposta foi útil?", formulário de feedback, opção de corrigir |
+| **Transparência de decisões de IA** | Usuários devem entender quando e por que uma decisão foi tomada por IA | Explicar "esta recomendação é baseada em X", indicar nível de confiança |
+| **Controle humano** | Usuários devem poder contestar, modificar ou reverter decisões da IA | Opção de "falar com humano", botão de override |
+| **Comunicação clara** | Linguagem acessível sobre capacidades e limitações | Disclaimers claros: "esta é uma sugestão, não um diagnóstico" |
+
+### Por que importa para a prova
+- O Exam Guide conecta design centrado no humano com explicabilidade
+- A ideia central: IA deve **servir** ao humano, não substituí-lo em decisões críticas sem supervisão
+- Sistemas devem ser projetados **com** os usuários, não apenas **para** eles
+
+> **DICA PARA A PROVA:** Se a questão menciona "permitir que usuários entendam decisões da IA" ou "mecanismos de feedback", pense em design centrado no ser humano. Se menciona "revisão humana de decisões de baixa confiança", pense em human-in-the-loop (A2I).
+
+---
+
+## Trade-offs entre Segurança e Transparência do Modelo
+
+O Exam Guide exige identificar **concessões** (trade-offs) entre segurança e transparência.
+
+### O dilema
+
+| Mais transparência | Mais segurança |
+|-------------------|----------------|
+| Publicar como o modelo funciona | Esconder detalhes para evitar exploração |
+| Abrir pesos do modelo (open-source) | Manter modelo proprietário (dificulta uso malicioso) |
+| Explicar cada decisão ao usuário | Limitar informação para evitar gaming do sistema |
+| Compartilhar métricas e limitações | Reter informação que poderia ser usada contra o sistema |
+
+### Exemplos práticos
+
+| Cenário | Transparência pede | Segurança pede | Trade-off |
+|---------|-------------------|----------------|-----------|
+| Modelo de detecção de fraude | Explicar por que transação foi bloqueada | Não revelar as regras (fraudadores poderiam evitá-las) | Explicação genérica sem revelar lógica interna |
+| Guardrails de conteúdo | Publicar quais tópicos são bloqueados | Não publicar (atacantes usariam para contornar) | Documentar princípios mas não regras exatas |
+| Modelo open-source | Qualquer pessoa pode auditar | Qualquer pessoa pode encontrar vulnerabilidades | Depende do contexto: pesquisa vs. produção |
+
+### Avaliação do desempenho vs. interpretabilidade
+
+| Tipo de modelo | Performance | Interpretabilidade | Trade-off |
+|---------------|-------------|-------------------|-----------|
+| Regressão linear | Menor | Alta | Entende facilmente mas pode ser insuficiente |
+| Random Forest | Média | Média | Equilíbrio razoável |
+| Deep Learning / LLM | Alta | Baixa | Melhor performance mas difícil explicar |
+
+> **DICA PARA A PROVA:** Se a questão apresenta cenário de "modelo com alta performance mas difícil de explicar" vs "modelo explicável mas menos preciso", está testando o trade-off performance vs. interpretabilidade. A escolha depende do contexto (regulação, risco, necessidade de auditoria).
+
+---
+
+## Modelos de Código Aberto, Dados e Licenciamento
+
+O Exam Guide menciona "modelos de código aberto, dados e licenciamento" como ferramentas para identificar modelos transparentes e explicáveis.
+
+### Modelos open-source/open-weight
+
+| Aspecto | Modelo proprietário | Modelo open-weight |
+|---------|--------------------|--------------------|
+| **Transparência** | Baixa — é caixa-preta | Alta — pesos disponíveis para inspeção |
+| **Auditabilidade** | Limitada ao que o provedor expõe | Completa — pode analisar internamente |
+| **Reprodutibilidade** | Dependente do provedor | Pode reproduzir resultados independentemente |
+| **Risco** | Dependência do provedor | Responsabilidade total do operador |
+| **Exemplos** | Claude, GPT | Llama, Mistral |
+
+### Licenciamento
+
+| Aspecto | Por que importa para IA responsável |
+|---------|-------------------------------------|
+| **Licença dos dados de treino** | Dados foram coletados legalmente? Respeitam copyright? |
+| **Licença do modelo** | Modelo pode ser usado comercialmente? Tem restrições de uso? |
+| **Licença de output** | Quem detém direitos sobre conteúdo gerado pelo modelo? |
+| **Restrições de uso** | Algumas licenças proíbem usos específicos (ex: vigilância, armas) |
+
+### Para a prova
+- **Transparência** beneficia-se de código aberto (permite auditoria)
+- **Licenciamento** é um aspecto de governança e compliance
+- Modelos open-weight permitem mais explicabilidade (pode analisar internamente)
+- Porém, open-weight não garante automaticamente que o modelo é justo ou seguro
+
+> **DICA PARA A PROVA:** Se a questão menciona "auditar internamente o modelo" ou "reproduzir resultados", modelo open-weight é necessário. Se menciona "reduzir risco de licenciamento", a resposta envolve verificar licenças de dados e modelo.
+
+---
+
+## Amazon Bedrock Model Evaluations para Transparência
+
+Bedrock Model Evaluations não serve apenas para performance — também ajuda na transparência e explicabilidade:
+
+| Funcionalidade | Como apoia transparência |
+|---------------|-------------------------|
+| Comparação de modelos | Documenta qual modelo é melhor e por quê |
+| Métricas de safety | Quantifica quão seguro é o modelo |
+| Métricas por subgrupo | Identifica disparidades entre grupos |
+| Avaliação humana | Captura percepção qualitativa de especialistas |
+| Relatórios | Gera evidência auditável de avaliação |
+
+---
+
 ## Alucinações — Detecção e Mitigação
 
 ### Detectar

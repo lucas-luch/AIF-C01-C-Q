@@ -119,6 +119,19 @@ Processo de dividir texto em unidades (tokens) que o modelo processa.
 
 ---
 
+## Transformers vs. Modelos de Difusão
+
+| Aspecto | Transformers (LLMs) | Modelos de Difusão |
+|---------|--------------------|--------------------|
+| **Geração** | Token por token (autoregressive) | Imagem inteira por denoising iterativo |
+| **Arquitetura** | Encoder/Decoder com self-attention | U-Net com cross-attention |
+| **Saída típica** | Texto, código | Imagens, vídeo |
+| **Exemplos** | Claude, GPT, Llama, Nova (texto) | Stable Diffusion, Nova Canvas |
+
+> **DICA PARA A PROVA:** Se a questão menciona geração de **texto** → arquitetura Transformer (decoder-only). Se menciona geração de **imagem** a partir de texto → pode ser modelo de difusão. Ambos podem existir como FMs no Bedrock, mas a arquitetura interna é diferente.
+
+---
+
 ## Resumo para a Prova
 
 | Conceito | O que lembrar |

@@ -1,176 +1,194 @@
-# Amazon Bedrock — Funcionalidades
+# Amazon Bedrock — Funcionalidades e Design de Aplicações
 
 ## Visão Geral
 
-Amazon Bedrock é o serviço central de IA generativa da AWS e o **mais cobrado na prova AIF-C01**. Este bloco aprofunda suas funcionalidades além do básico.
+Amazon Bedrock é o serviço central de IA generativa da AWS e o **mais cobrado na prova AIF-C01** (Domínio 3 = 28%). Este bloco cobre funcionalidades, critérios de seleção de FM, vector databases e trade-offs de customização.
 
 ---
 
-## Modelos Disponíveis
+## Critérios de Seleção de Foundation Models
 
-### Seleção de Modelo
-Fatores para escolher um FM no Bedrock:
-- **Tarefa:** geração de texto, embeddings, imagem, multimodal
-- **Qualidade:** modelos maiores são mais capazes mas mais caros
-- **Latência:** modelos menores respondem mais rápido
-- **Custo:** precificação por token varia entre provedores
-- **Idiomas:** cobertura varia entre modelos
-- **Context window:** limite de entrada + saída
+O Exam Guide exige saber identificar os critérios para escolher um FM pré-treinado. A seleção depende do caso de uso.
 
-### Precificação
-- **On-demand:** paga por token processado (entrada + saída)
-- **Provisioned Throughput:** capacidade reservada para workloads previsíveis
-- **Batch inference:** processamento em lote com desconto (não real-time)
+| Critério | O que avaliar | Impacto |
+|----------|--------------|---------|
+| **Custo** | Preço por token (entrada/saída), modelo de pricing | Trade-off direto com qualidade |
+| **Modalidade** | Texto, imagem, áudio, vídeo, multimodal | O modelo precisa processar/gerar o tipo de dado requerido |
+| **Latência** | Tempo de resposta (ms a segundos) | Aplicações interativas exigem modelos mais rápidos (geralmente menores) |
+| **Multilíngue** | Suporte a idiomas específicos | Nem todos os modelos funcionam bem em todos os idiomas |
+| **Tamanho do modelo** | Número de parâmetros | Maior = mais capaz mas mais caro e lento |
+| **Complexidade do modelo** | Capacidade de raciocínio e tarefas complexas | Tarefas simples não precisam do modelo mais complexo |
+| **Personalização** | Possibilidade de fine-tuning, continued pre-training | Alguns modelos permitem mais customização que outros |
+| **Tamanho de entrada/saída** | Context window, max output tokens | Documentos longos exigem context window grande |
+| **Prompt caching** | Suporte a reutilização de prefixos processados | Reduz custo e latência para prompts repetitivos |
 
----
+### Framework de decisão para seleção
 
-## Knowledge Bases (RAG Gerenciado)
+```
+Tarefa simples (classificação, extração)?
+├── SIM → Modelo menor (custo-efetivo, baixa latência)
+│
+└── NÃO → Tarefa complexa (raciocínio, geração longa)?
+    ├── SIM → Modelo maior (mais capaz)
+    │
+    └── Precisa processar imagens/vídeo/áudio?
+        ├── SIM → Modelo multimodal
+        └── NÃO → Modelo texto-only (geralmente mais barato)
+```
 
-### O que é
-Serviço que implementa RAG de forma gerenciada — conecta Foundation Models a suas fontes de dados.
-
-### Fluxo
-1. Você carrega documentos em uma fonte (S3, web crawler, etc.)
-2. Bedrock processa os documentos: chunking → embeddings → armazena em vector database
-3. Na hora da query: busca chunks relevantes → injeta como contexto → FM gera resposta
-
-### Componentes
-| Componente | Papel |
-|-----------|-------|
-| Data source | Onde estão seus documentos (S3, Confluence, SharePoint, web) |
-| Chunking | Divide documentos em pedaços menores |
-| Embedding model | Converte chunks em vetores |
-| Vector database | Armazena vetores (OpenSearch Serverless, Pinecone, etc.) |
-| Retrieval | Busca chunks similares à query |
-| FM | Gera resposta usando os chunks como contexto |
-
-### Quando usar
-- Respostas baseadas em documentos internos/proprietários
-- Reduzir alucinações com dados factuais
-- Manter informação atualizada sem re-treinar o modelo
+> **DICA PARA A PROVA:** Se a questão menciona "menor custo" + "tarefa simples" → modelo menor. Se menciona "raciocínio complexo" + "múltiplas etapas" → modelo maior. Se menciona "processar imagens e texto" → multimodal.
 
 ---
 
-## Agents (Agentes)
+## Parâmetros de Inferência e Efeito nas Respostas
 
-### O que são
-Foundation Models que podem **planejar e executar ações** — não apenas gerar texto, mas interagir com sistemas.
+*(Detalhes completos no D2 C-03. Resumo contextualizado para design de aplicações:)*
 
-### Ciclo de um Agent
-1. Recebe instrução do usuário
-2. **Raciocina** sobre o que precisa fazer (ReAct: Reason + Act)
-3. Decide qual **ação** executar
-4. Executa a ação (chama API/Lambda)
-5. **Observa** o resultado
-6. Repete até completar a tarefa
-7. Gera resposta final
-
-### Componentes
-| Componente | Função |
-|-----------|--------|
-| Foundation Model | Raciocínio e tomada de decisão |
-| Action Groups | Ações que o agent pode executar (Lambda functions) |
-| Knowledge Bases | Informação que o agent pode consultar |
-| Instructions | Regras e comportamento do agent |
-
-### Exemplos de uso
-- Agent de atendimento que consulta pedidos e processa devoluções
-- Agent de pesquisa que busca em múltiplas fontes e sintetiza
-- Agent de vendas que consulta estoque e cria cotações
+| Parâmetro | Efeito | Aplicação no design |
+|-----------|--------|-------------------|
+| **Temperature** | Controla diversidade/criatividade | Factual → baixa; Criativo → alta |
+| **Tamanho de entrada** | Mais tokens = mais custo + latência | Prompts concisos economizam |
+| **Tamanho de saída (max tokens)** | Limita comprimento da resposta | Definir limites adequados à tarefa |
+| **Top-p / Top-k** | Controla pool de tokens candidatos | Ajuste fino de diversidade |
 
 ---
 
-## Guardrails
+## Vector Databases — Serviços AWS
 
-### O que são
-Filtros e controles que limitam o comportamento do FM para uso seguro em produção.
+O Exam Guide lista explicitamente os serviços AWS para armazenar embeddings em bancos vetoriais.
 
-### Tipos de proteção
-| Tipo | O que faz |
-|------|-----------|
-| **Content filters** | Bloqueia conteúdo violento, sexual, insultos, etc. |
-| **Denied topics** | Lista de tópicos que o modelo não pode abordar |
+| Serviço AWS | Descrição | Uso com RAG |
+|-------------|-----------|-------------|
+| **Amazon OpenSearch Service** | Motor de busca com suporte a vetores (k-NN) | Padrão no Bedrock Knowledge Bases |
+| **Amazon Aurora** | PostgreSQL com extensão pgvector | Quando já usa Aurora como banco principal |
+| **Amazon Neptune** | Banco de grafos com suporte a vetores | Quando precisa de relações entre entidades + busca vetorial |
+| **Amazon RDS para PostgreSQL** | PostgreSQL gerenciado com pgvector | Alternativa gerenciada com pgvector sem Aurora |
+
+### Quando escolher cada um
+
+| Cenário | Vector DB recomendado |
+|---------|----------------------|
+| RAG padrão com Bedrock Knowledge Bases | OpenSearch Service (integração nativa) |
+| Já tem dados em Aurora PostgreSQL | Aurora com pgvector (evita duplicar dados) |
+| Precisa de busca vetorial + relações complexas (grafos) | Amazon Neptune |
+| Quer simplicidade com PostgreSQL padrão | Amazon RDS para PostgreSQL com pgvector |
+
+---
+
+## Funcionalidades do Bedrock
+
+### Knowledge Bases (RAG Gerenciado)
+
+*(Detalhes completos no C-02. Resumo:)*
+- Implementa RAG de forma gerenciada
+- Fontes: S3, web crawler, Confluence, SharePoint
+- Chunking → embeddings → vector database → retrieval → geração
+- Citações automáticas nas respostas
+
+### Agents
+
+*(Detalhes completos no C-04. Resumo:)*
+- FMs que planejam e executam ações (tool use)
+- Action Groups (Lambda), Knowledge Bases, Instructions
+- Padrão ReAct (Reason → Act → Observe)
+
+### Guardrails
+
+Filtros e controles para uso seguro em produção.
+
+| Tipo de proteção | O que faz |
+|-----------------|-----------|
+| **Content filters** | Bloqueia conteúdo violento, sexual, insultos |
+| **Denied topics** | Tópicos que o modelo não pode abordar |
 | **Word filters** | Bloqueia palavras/frases específicas |
-| **PII filters** | Detecta e redige dados pessoais (CPF, email, telefone) |
-| **Grounding check** | Verifica se a resposta está ancorada no contexto fornecido |
+| **PII filters** | Detecta e redige dados pessoais |
+| **Grounding check** | Verifica se a resposta está ancorada no contexto |
 | **Contextual grounding** | Detecta alucinações comparando resposta vs fonte |
 
-### Quando usar
-- Chatbots voltados ao público
-- Aplicações reguladas (saúde, finanças)
-- Quando há risco de uso indevido
-- Para compliance com políticas corporativas
+> **CUIDADO:** Guardrails é uma **camada adicional** de proteção. Não substitui system prompts bem escritos — ambos devem ser usados juntos. System prompt define comportamento; Guardrails bloqueia violações.
+
+### Fine-tuning e Continued Pre-training
+
+| Opção | Dados | Objetivo | Custo |
+|-------|-------|----------|-------|
+| **Fine-tuning** | Pares input/output (centenas-milhares) | Ajustar estilo/comportamento | Alto |
+| **Continued Pre-training** | Texto corrido do domínio (milhões de tokens) | Ensinar conhecimento novo | Muito alto |
+| **Model Distillation** | Outputs de modelo maior (teacher) | Criar modelo menor com performance similar | Médio-alto |
+
+### Model Evaluation
+
+- Comparar modelos com métricas automáticas (ROUGE, BLEU, BERTScore)
+- Avaliação humana configurável
+- LLM-as-a-judge
+- Datasets customizados com exemplos reais
+
+### Prompt Management
+
+- Versionamento de prompts
+- Templates com variáveis
+- Comparação de performance entre versões
+
+### Provisioned Throughput
+
+- Capacidade dedicada para workloads previsíveis
+- Latência consistente garantida
+- Modelo de preço: por unidade de capacidade/tempo
 
 ---
 
-## Fine-tuning no Bedrock
+## Trade-offs de Custo entre Abordagens de Customização
 
-### O que é
-Ajustar os pesos de um FM usando seus dados específicos.
+O Exam Guide pede explicitamente entender os trade-offs de custo.
 
-### Quando usar
-- O modelo precisa de **estilo/tom** muito específico
-- Domínio especializado com vocabulário próprio
-- Prompt engineering e RAG não são suficientes
+| Abordagem | Custo de setup | Custo de inferência | Tempo para implementar | Qualidade |
+|-----------|---------------|--------------------|-----------------------|-----------|
+| **Prompt Engineering** | Nenhum | Padrão (tokens) | Imediato | Boa para tarefas simples |
+| **RAG** | Médio (infra de busca) | Padrão + busca | Dias | Boa + dados atualizados |
+| **Fine-tuning** | Alto (treino) | Pode ser menor (prompts mais curtos) | Semanas | Excelente para estilo/formato |
+| **Continued Pre-training** | Muito alto | Similar ao fine-tuning | Semanas-meses | Necessário para domínios novos |
+| **Model Distillation** | Médio-alto | Menor (modelo menor) | Dias-semanas | ~90-95% do modelo original |
+| **In-context learning (few-shot)** | Nenhum | Maior (mais tokens de input) | Imediato | Boa para formato/padrão |
 
-### Processo
-1. Preparar dataset (pares input/output ou texto do domínio)
-2. Criar training job no Bedrock
-3. Modelo é fine-tuned (cópia privada)
-4. Deploy do modelo customizado
+### Cenários de decisão de custo
 
-### Continued Pre-training
-- Diferente de fine-tuning: ensina **conhecimento novo** ao modelo
-- Usa grandes volumes de texto do domínio (não pares input/output)
-- Mais caro e intensivo que fine-tuning
-- Para quando o modelo precisa entender terminologia especializada
-
----
-
-## Model Evaluation
-
-### O que é
-Comparar múltiplos modelos do Bedrock em métricas relevantes para seu caso de uso.
-
-### Tipos de avaliação
-- **Automática:** métricas quantitativas (ROUGE, BLEU, acurácia)
-- **Humana:** avaliadores classificam qualidade das respostas
-- **Comparativa:** qual modelo é melhor para SUA tarefa específica
+| Cenário | Abordagem mais custo-efetiva |
+|---------|------------------------------|
+| Volume baixo, tarefa variada | Prompt engineering (on-demand) |
+| Volume alto, tarefa específica | Fine-tuning (prompts mais curtos = menos tokens) |
+| Dados mudam frequentemente | RAG (sem retreino) |
+| Modelo grande funciona mas é caro demais | Model distillation |
+| Volume alto e previsível | Provisioned Throughput |
+| Volume alto sem urgência | Batch inference (desconto ~50%) |
+| Prefixo de prompt se repete | Prompt caching |
 
 ---
 
-## SageMaker Clarify para IA Generativa
+## Função dos Agentes de IA — Aplicações Comerciais
 
-Clarify não é só para ML tabular — também avalia FMs:
+O Exam Guide 3.1 pede definir a função de agentes e suas aplicações comerciais.
 
-### O que faz para GenAI
-| Funcionalidade | Descrição |
-|---------------|-----------|
-| **Avaliação de qualidade** | Medir ROUGE, BLEU, BERTScore, perplexidade |
-| **Detecção de toxicidade** | Identificar conteúdo ofensivo nas respostas |
-| **Detecção de viés em texto** | Estereótipos, linguagem tendenciosa |
-| **Factual knowledge** | Comparar respostas com referência para detectar alucinações |
-| **Robustez** | Testar como o modelo se comporta com inputs adversariais |
-
-### Quando usar na prova
-- "Avaliar fairness de um FM" → Clarify (bias em texto gerado)
-- "Detectar se modelo gera estereótipos" → Clarify (toxicity/bias)
-- "Comparar qualidade de modelos com métricas" → Model Evaluation + Clarify
+| Aplicação comercial | O que o agente faz |
+|--------------------|-------------------|
+| **Atendimento ao cliente** | Consulta pedidos, processa devoluções, escalona para humano |
+| **Vendas** | Consulta estoque, calcula preços, gera propostas |
+| **RH / People Ops** | Responde dúvidas de políticas, agenda entrevistas |
+| **Pesquisa e análise** | Busca em múltiplas fontes, sintetiza relatórios |
+| **Automação de TI** | Consulta logs, identifica problemas, executa remediação |
+| **Financeiro** | Processa despesas, gera relatórios, consulta compliance |
 
 ---
 
 ## Resumo para a Prova
 
-| Funcionalidade | Para que serve |
-|---------------|----------------|
-| Knowledge Bases | RAG gerenciado (respostas baseadas em seus docs) |
-| Agents | FM que executa ações (chama APIs, Lambda) |
-| Guardrails | Filtros de segurança e conteúdo |
-| Fine-tuning | Ajustar estilo/comportamento do modelo |
-| Continued Pre-training | Ensinar conhecimento novo ao modelo |
-| Model Evaluation | Comparar modelos para seu caso de uso |
-| Provisioned Throughput | Capacidade dedicada para produção |
+| Pergunta | Resposta |
+|----------|----------|
+| "Critérios para escolher um FM?" | Custo, modalidade, latência, multilíngue, tamanho, personalização, prompt caching |
+| "Onde armazenar embeddings na AWS?" | OpenSearch, Aurora, Neptune, RDS PostgreSQL |
+| "Reduzir custo com modelo menor treinado pelo maior?" | Model distillation |
+| "Abordagem de menor custo para tarefa simples?" | Prompt engineering com modelo menor |
+| "Dados que mudam frequentemente?" | RAG (sem retreino) |
+| "Volume alto com latência consistente?" | Provisioned Throughput |
+| "Filtrar conteúdo + verificar grounding?" | Guardrails for Amazon Bedrock |
+| "Guardrails substitui system prompt?" | NÃO — são complementares |
 
 ---
-
-*Próximo bloco: RAG (Retrieval-Augmented Generation)*

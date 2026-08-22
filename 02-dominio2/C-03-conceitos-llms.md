@@ -156,9 +156,11 @@ Na prática (e na prova), os parâmetros são usados em conjunto:
 **Regra para a prova:** Temperature e top-p controlam DIVERSIDADE. Max tokens controla COMPRIMENTO. Context window é o LIMITE TOTAL (input + output). São dimensões independentes.
 
 **Interação temperature + top-p:**
-- Quando ambos são baixos → resposta muito restrita (poucas opções)
-- Quando ambos são altos → resposta muito livre (pode ser incoerente)
-- Na prática: ajustar UM deles é suficiente. A prova geralmente foca em temperature como o controle principal.
+- Quando ambos são baixos → resposta muito restrita (poucas opções de token)
+- Quando ambos são altos → resposta mais livre (maior variedade)
+- Na prática: geralmente ajustar UM deles é suficiente. A prova tende a focar em temperature como o controle principal de criatividade vs. determinismo.
+
+> **CUIDADO:** Não interprete top-p como "mais alto = mais aleatório" de forma simplista. Top-p = 0.9 significa considerar tokens que cobrem 90% da massa de probabilidade — o efeito depende da distribuição. Se o modelo está muito confiante em um token, mesmo top-p alto resultará em output focado.
 
 ---
 
@@ -171,11 +173,75 @@ Na prática (e na prova), os parâmetros são usados em conjunto:
 | Tamanho do modelo | ↑ custo por token | ↑ latência |
 | Temperature | Sem impacto | Sem impacto significativo |
 
-### Otimizações
-- Usar modelos menores para tarefas simples
-- Limitar max_tokens quando possível
-- Cache de respostas para queries repetidas
-- Prompt conciso (menos tokens de entrada)
+---
+
+## Precificação Baseada em Tokens
+
+O Exam Guide exige entender como a precificação por tokens afeta custo e performance.
+
+### Estrutura de preço típica
+
+| Componente | Descrição | Impacto |
+|-----------|-----------|---------|
+| **Tokens de entrada** | Cada token do prompt é cobrado | Prompts longos = mais caro |
+| **Tokens de saída** | Cada token gerado é cobrado (geralmente 3-5x mais caro que entrada) | Respostas longas = custo significativo |
+| **Modelo escolhido** | Modelos maiores/mais capazes custam mais por token | Trade-off: qualidade vs custo |
+
+### Efeito no design de aplicações
+
+| Decisão de design | Impacto no custo | Impacto na qualidade |
+|-------------------|------------------|---------------------|
+| Prompts concisos | ↓ custo | Pode manter qualidade se bem estruturado |
+| Limitar max_tokens | ↓ custo | Pode truncar respostas |
+| Usar modelo menor para tarefas simples | ↓↓ custo | Adequado para tarefas simples |
+| Prompt caching (ver abaixo) | ↓ custo e latência | Sem impacto na qualidade |
+| Batch inference | ↓↓ custo (desconto ~50%) | Sem impacto, mas não é real-time |
+
+> **DICA PARA A PROVA:** Se a questão menciona "otimizar custo de inferência", pense em: modelo menor para tarefas simples, prompts concisos, prompt caching, batch inference. Se menciona "tokens de saída são caros", a solução é limitar max_tokens ou usar modelo menor.
+
+---
+
+## Prompt Caching
+
+**Conceito:** Técnica que reutiliza o processamento de **prefixos de prompt** que se repetem entre requisições, evitando recomputá-los a cada chamada.
+
+### Como funciona
+- Muitas aplicações usam o mesmo system prompt + contexto base em todas as requisições
+- Sem cache: o modelo processa o prefixo inteiro a cada chamada
+- Com cache: o processamento do prefixo é armazenado e reutilizado
+
+### Benefícios
+
+| Benefício | Descrição |
+|-----------|-----------|
+| **Redução de custo** | Tokens cacheados custam menos que tokens processados do zero |
+| **Redução de latência** | Menos tokens para processar = resposta mais rápida |
+| **Mesmo resultado** | O output não muda — cache é transparente para a qualidade |
+
+### Quando é útil
+- Aplicações com **system prompt longo** que se repete (RAG com contexto fixo)
+- **Few-shot prompts** com muitos exemplos fixos
+- Chatbots com **instruções extensas** que não mudam entre mensagens
+
+### Quando NÃO ajuda
+- Cada requisição tem um prompt completamente diferente
+- Prompts curtos (overhead do cache não compensa)
+
+> **DICA PARA A PROVA:** Se a questão descreve "prompt longo que se repete em muitas requisições" + "reduzir custo/latência", prompt caching é a resposta. O Exam Guide menciona prompt caching como critério de seleção de modelo (Domínio 3).
+
+---
+
+## Otimizações de Custo e Performance
+
+| Estratégia | Reduz custo? | Reduz latência? | Observação |
+|-----------|-------------|-----------------|------------|
+| Modelo menor para tarefas simples | ✅ | ✅ | Funciona para classificação, extração simples |
+| Limitar max_tokens | ✅ | ✅ | Pode truncar se limite muito baixo |
+| Prompt conciso | ✅ | ✅ | Menos tokens de entrada |
+| Prompt caching | ✅ | ✅ | Para prefixos repetidos |
+| Batch inference | ✅✅ | ❌ (não é real-time) | Para processamento em massa |
+| Provisioned Throughput | Depende do volume | ✅ (consistente) | Para volume alto e previsível |
+| Cache de respostas (aplicação) | ✅✅ | ✅✅ | Para queries idênticas repetidas |
 
 ---
 

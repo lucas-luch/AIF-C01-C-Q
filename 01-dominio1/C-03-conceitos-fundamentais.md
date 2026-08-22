@@ -127,9 +127,9 @@ Como tentar descrever um mapa 3D usando apenas uma linha reta — simples demais
 |----------|----------|-----------|----------------|
 | Treino | 70-80% | Modelo aprende | Durante treinamento |
 | Validação | 10-15% | Ajustar hiperparâmetros | Durante tuning |
-| Teste | 10-15% | Avaliação final imparcial | UMA vez no final |
+| Teste | 10-15% | Avaliação final imparcial | Idealmente uma vez ao final (evitar data leakage) |
 
-**Cross-validation (validação cruzada):** Técnica onde os dados são divididos em K partes (folds). O modelo treina em K-1 partes e valida na restante, repetindo K vezes. Dá uma estimativa mais robusta da performance.
+**Cross-validation (validação cruzada):** Técnica onde os dados são divididos em K partes (folds). O modelo treina em K-1 partes e valida na restante, repetindo K vezes. Dá uma estimativa mais robusta da performance, especialmente com datasets pequenos.
 
 ---
 
