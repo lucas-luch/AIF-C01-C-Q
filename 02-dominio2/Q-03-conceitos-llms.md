@@ -4,24 +4,24 @@
 
 ### Questão 1
 
-Um desenvolvedor quer que um LLM gere respostas factualmente precisas e consistentes para perguntas sobre políticas da empresa. Qual configuração de temperature é mais adequada?
+Uma empresa de seguros está implantando um chatbot para responder perguntas sobre apólices. O chatbot deve fornecer respostas consistentes e factualmente precisas — duas perguntas idênticas devem gerar respostas praticamente iguais. Qual configuração de inferência é mais adequada?
 
-A) Temperature = 1.0 (alta criatividade)  
-B) Temperature = 0 ou próximo de 0 (determinístico)  
-C) Temperature = 2.0 (máxima diversidade)  
-D) Temperature não afeta a qualidade das respostas  
+A) Temperature = 1.0 para gerar respostas naturais e variadas  
+B) Temperature = 0 ou próximo de 0 para maximizar consistência e determinismo  
+C) Top-p = 1.0 para considerar todo o vocabulário disponível  
+D) Max tokens = máximo para garantir respostas completas  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Temperature = 0 ou próximo de 0 (determinístico)**
+**Resposta: B) Temperature = 0 ou próximo de 0 para maximizar consistência e determinismo**
 
-✅ **Por que B está correta:** Temperature baixa faz o modelo escolher os tokens mais prováveis, gerando respostas mais previsíveis, focadas e factualmente consistentes — ideal para informações de políticas.
+✅ **Por que B está correta:** Temperature baixa faz o modelo escolher os tokens mais prováveis a cada passo, gerando respostas previsíveis e consistentes. Para informações de apólices (factuais e reguladas), consistência é crítica.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Temperature alta aumenta aleatoriedade — respostas criativas mas menos confiáveis.
-- **C)** Temperature 2.0 geraria respostas quase aleatórias — péssimo para informação factual.
-- **D)** Temperature afeta diretamente a consistência e diversidade das respostas.
+- **A)** Temperature 1.0 introduz variação — respostas diferentes para a mesma pergunta, inaceitável para informações contratuais.
+- **C)** Top-p = 1.0 considera toda a distribuição de probabilidade, permitindo tokens menos prováveis — reduz consistência.
+- **D)** Max tokens controla comprimento da resposta, não consistência ou factualidade.
 
 </details>
 
@@ -29,24 +29,24 @@ D) Temperature não afeta a qualidade das respostas
 
 ### Questão 2
 
-O que é "alucinação" (hallucination) no contexto de LLMs?
+Uma empresa implantou um assistente de IA generativa que responde perguntas sobre seus produtos. Um cliente reportou que o assistente afirmou com confiança que o produto "X-Pro" tem garantia de 5 anos, quando na realidade a garantia é de 2 anos. O texto gerado era fluente e convincente. Qual fenômeno de LLMs explica esse comportamento?
 
-A) Quando o modelo demora muito para responder  
-B) Quando o modelo gera informação que parece plausível mas é factualmente incorreta  
-C) Quando o modelo não consegue processar a entrada  
-D) Quando o modelo repete a mesma resposta múltiplas vezes  
+A) Data drift — os dados de treinamento ficaram desatualizados  
+B) Alucinação (hallucination) — o modelo gerou informação plausível mas factualmente incorreta  
+C) Overfitting — o modelo memorizou dados errados de treinamento  
+D) Underfitting — o modelo não tem capacidade suficiente para a tarefa  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Quando o modelo gera informação que parece plausível mas é factualmente incorreta**
+**Resposta: B) Alucinação (hallucination) — o modelo gerou informação plausível mas factualmente incorreta**
 
-✅ **Por que B está correta:** Alucinação é quando o LLM "inventa" informação com confiança — parece verdadeiro, o texto é fluente, mas o conteúdo é falso (dados, referências, funcionalidades inexistentes).
+✅ **Por que B está correta:** O cenário descreve exatamente alucinação: informação apresentada com confiança, texto fluente e convincente, mas factualmente falsa. LLMs geram texto estatisticamente provável, não necessariamente verdadeiro.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Latência alta é um problema de performance, não alucinação.
-- **C)** Não processar entrada é um erro técnico, não alucinação.
-- **D)** Repetição é um problema de geração diferente (repetition/loop).
+- **A)** Data drift é degradação de performance ao longo do tempo por mudança nos dados de entrada — não se aplica a LLMs gerando fatos incorretos.
+- **C)** Overfitting causa performance ruim em dados novos, não geração de informações inventadas.
+- **D)** Underfitting resultaria em respostas de baixa qualidade geral, não em respostas fluentes com dados falsos específicos.
 
 </details>
 
@@ -54,24 +54,24 @@ D) Quando o modelo repete a mesma resposta múltiplas vezes
 
 ### Questão 3
 
-Uma empresa está criando um chatbot e quer reduzir as alucinações do LLM. Qual abordagem é MAIS eficaz?
+Uma empresa implantou um chatbot com RAG e temperatura baixa, mas ainda observa alucinações ocasionais quando clientes fazem perguntas sobre produtos que não estão na base de conhecimento. A equipe quer uma camada adicional de proteção. Qual abordagem complementa o RAG para reduzir alucinações neste cenário?
 
-A) Aumentar a temperature  
-B) Usar RAG para ancorar respostas em documentos reais  
-C) Usar um modelo maior  
-D) Aumentar o max_tokens  
+A) Aumentar o tamanho do modelo para melhorar a capacidade de raciocínio  
+B) Adicionar instruções no prompt para que o modelo responda "não sei" quando não encontrar informação no contexto fornecido  
+C) Aumentar a temperature para gerar respostas mais diversas e encontrar a correta  
+D) Usar fine-tuning para ensinar o modelo sobre todos os produtos futuros  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Usar RAG para ancorar respostas em documentos reais**
+**Resposta: B) Adicionar instruções no prompt para que o modelo responda "não sei" quando não encontrar informação no contexto fornecido**
 
-✅ **Por que B está correta:** RAG busca informação factual de fontes reais e a injeta no contexto, forçando o modelo a basear suas respostas em dados verificáveis — a técnica mais eficaz contra alucinações.
+✅ **Por que B está correta:** Quando a base de conhecimento não contém a resposta, o RAG retorna contexto irrelevante ou vazio. Um prompt restritivo ("responda APENAS com base no contexto; se não encontrar, diga que não tem essa informação") previne que o modelo "invente" uma resposta.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Aumentar temperature PIORA alucinações (mais aleatoriedade).
-- **C)** Modelos maiores podem ser mais capazes, mas ainda alucinam sem grounding.
-- **D)** Max tokens afeta comprimento, não factualidade.
+- **A)** Modelos maiores podem ser mais capazes, mas ainda alucinam quando não têm informação — tamanho não resolve ausência de dados.
+- **C)** Temperature alta PIORA alucinações — gera tokens menos prováveis, aumentando invenção.
+- **D)** Fine-tuning não pode cobrir "todos os produtos futuros" — e RAG já é a solução para dados mutáveis.
 
 </details>
 
@@ -79,24 +79,24 @@ D) Aumentar o max_tokens
 
 ### Questão 4
 
-O que é a "context window" de um LLM?
+Uma empresa está arquitetando uma solução de IA generativa e precisa processar contratos de 200 páginas inteiros em uma única chamada ao modelo. O arquiteto afirma que o principal limitador é a "context window" do modelo escolhido. O que essa limitação significa na prática?
 
-A) A interface visual onde o usuário digita  
-B) O número máximo de tokens que o modelo pode processar em uma única interação  
-C) O período de tempo que o modelo fica disponível  
-D) A quantidade de modelos que podem rodar simultaneamente  
+A) O tempo máximo que uma sessão de chat pode ficar ativa antes de expirar  
+B) O número máximo de tokens (entrada + saída) que o modelo pode processar em uma única interação  
+C) A quantidade máxima de documentos que podem ser indexados na Knowledge Base  
+D) O número máximo de usuários simultâneos que podem interagir com o modelo  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) O número máximo de tokens que o modelo pode processar em uma única interação**
+**Resposta: B) O número máximo de tokens (entrada + saída) que o modelo pode processar em uma única interação**
 
-✅ **Por que B está correta:** Context window define o limite total de tokens (entrada + saída) que o modelo processa por vez. Se exceder, o conteúdo é truncado ou gera erro.
+✅ **Por que B está correta:** Context window define o limite total de tokens processáveis por chamada. Para contratos de 200 páginas, o texto tokenizado precisa caber na window junto com espaço para a resposta. Se exceder, o conteúdo é truncado.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Isso é a interface de usuário (UI), não context window.
-- **C)** Context window é sobre capacidade de processamento, não disponibilidade temporal.
-- **D)** Isso se refere a capacidade de infraestrutura, não ao modelo em si.
+- **A)** Timeout de sessão é configuração de infraestrutura, não propriedade do modelo.
+- **C)** Knowledge Base pode indexar volumes ilimitados de documentos — a context window limita quanto pode ser injetado por query, não o índice total.
+- **D)** Usuários simultâneos dependem de throughput/infraestrutura, não da context window.
 
 </details>
 
@@ -104,24 +104,24 @@ D) A quantidade de modelos que podem rodar simultaneamente
 
 ### Questão 5
 
-Embeddings são usados em qual cenário?
+Uma empresa está implementando busca semântica para que clientes encontrem produtos usando descrições em linguagem natural (ex: "sapato confortável para caminhada longa"). A equipe precisa converter as descrições dos produtos em representações que permitam busca por similaridade de significado. Qual tecnologia é essencial para isso?
 
-A) Para criptografar dados sensíveis  
-B) Para representar texto como vetores numéricos e permitir busca semântica  
-C) Para comprimir modelos e reduzir custo  
-D) Para traduzir texto entre idiomas  
+A) Tokenização com BPE (Byte-Pair Encoding) para dividir as descrições em subpalavras  
+B) Embeddings para representar texto como vetores numéricos onde significados similares ficam próximos  
+C) Fine-tuning do modelo base com dados de produtos para melhorar a classificação  
+D) Guardrails para filtrar buscas com conteúdo inadequado  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Para representar texto como vetores numéricos e permitir busca semântica**
+**Resposta: B) Embeddings para representar texto como vetores numéricos onde significados similares ficam próximos**
 
-✅ **Por que B está correta:** Embeddings convertem texto em vetores numéricos onde textos com significado similar ficam próximos no espaço vetorial. Isso permite busca por similaridade semântica — base do RAG.
+✅ **Por que B está correta:** Embeddings convertem texto em vetores no espaço numérico onde a proximidade reflete similaridade semântica. "Sapato para caminhada" ficaria próximo de "tênis de trilha" — permitindo busca por significado, não por keywords exatas.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Embeddings não são criptografia — são representações, não proteção.
-- **C)** Embeddings não comprimem modelos — são usados para representar dados.
-- **D)** Tradução é feita pelo modelo (encoder-decoder), não pelos embeddings isoladamente.
+- **A)** Tokenização divide texto em unidades processáveis, mas não cria representações semânticas comparáveis — é um pré-processamento, não a solução de busca.
+- **C)** Fine-tuning muda o comportamento de geração do modelo — não é necessário para criar embeddings de busca.
+- **D)** Guardrails filtram conteúdo indesejado — não têm relação com busca semântica.
 
 </details>
 
@@ -129,24 +129,36 @@ D) Para traduzir texto entre idiomas
 
 ### Questão 6
 
-Um modelo de IA generativa está gerando respostas muito longas e o custo está alto. Qual parâmetro deve ser ajustado para controlar isso?
+Uma empresa está usando um LLM no Amazon Bedrock para gerar resumos executivos de relatórios financeiros. Os resumos estão ficando muito longos (3-4 parágrafos) e o custo por requisição está alto. A equipe quer limitar os resumos a 1 parágrafo curto. Qual parâmetro de inferência resolve DIRETAMENTE o problema de custo e comprimento?
 
-A) Temperature  
-B) Top-p  
-C) Max tokens  
-D) Context window  
+A) Reduzir a temperature para gerar respostas mais focadas  
+B) Reduzir max_tokens para limitar o número de tokens na resposta gerada  
+C) Reduzir top-p para limitar a diversidade do vocabulário usado  
+D) Mudar para um modelo com context window menor  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: C) Max tokens**
+**Resposta: B) Reduzir max_tokens para limitar o número de tokens na resposta gerada**
 
-✅ **Por que C está correta:** Max tokens define o limite máximo de tokens na resposta gerada. Reduzir esse valor limita o comprimento da saída, reduzindo custo (paga-se por token de saída).
+✅ **Por que B está correta:** Max tokens define o limite máximo de tokens gerados na saída. Reduzir esse valor limita o comprimento da resposta E reduz custo diretamente (paga-se por token de saída no Bedrock on-demand).
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Temperature controla criatividade/aleatoriedade, não comprimento.
-- **B)** Top-p controla diversidade do vocabulário, não comprimento.
-- **D)** Context window é fixo do modelo — não é configurável por request.
+- **A)** Temperature controla aleatoriedade/criatividade — respostas com temperature baixa podem ser igualmente longas.
+- **C)** Top-p limita quais tokens são considerados na geração (diversidade), mas não o comprimento.
+- **D)** Context window é propriedade fixa do modelo, não um parâmetro ajustável por request. E uma window menor não garante respostas mais curtas.
 
 </details>
 
+---
+
+## Resultado
+
+Acertou todas? Se não, revise os conceitos em `C-03-conceitos-llms.md`.
+
+**Dica para a prova:** A AWS testa esses conceitos em cenários práticos:
+- Temperature baixa → respostas factual/consistentes; alta → criativas/variadas
+- Alucinação → RAG + prompt restritivo como principal mitigação
+- Context window → limitação de tokens por interação (impacta documentos longos)
+- Embeddings → base da busca semântica e RAG
+- Max tokens → controle direto de custo e comprimento de saída

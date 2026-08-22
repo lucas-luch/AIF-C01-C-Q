@@ -4,24 +4,24 @@
 
 ### Questão 1
 
-Uma rede de varejo quer segmentar seus clientes em grupos com base no comportamento de compra, sem ter categorias predefinidas. Qual tarefa de ML é mais adequada?
+Uma rede de varejo com 2 milhões de clientes quer identificar grupos com padrões de compra similares para criar campanhas de marketing direcionadas. A equipe de marketing não tem categorias predefinidas de clientes — querem que os padrões emerjam dos dados. Qual tarefa de ML é mais adequada?
 
-A) Classificação  
-B) Regressão  
-C) Clustering  
-D) Detecção de anomalias  
+A) Classificação supervisionada usando as categorias de produtos como rótulos  
+B) Regressão para prever o valor de compra de cada grupo  
+C) Clustering para descobrir agrupamentos naturais nos dados sem rótulos predefinidos  
+D) Detecção de anomalias para identificar clientes com comportamento atípico  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: C) Clustering**
+**Resposta: C) Clustering para descobrir agrupamentos naturais nos dados sem rótulos predefinidos**
 
-✅ **Por que C está correta:** "Segmentar em grupos" + "sem categorias predefinidas" = clustering. O modelo descobre agrupamentos naturais nos dados.
+✅ **Por que C está correta:** "Identificar grupos" + "sem categorias predefinidas" + "padrões emerjam dos dados" = clustering. O modelo descobre segmentos naturais baseado em similaridade de comportamento.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Classificação requer categorias já definidas para treinar.
-- **B)** Regressão prevê valores numéricos, não agrupa.
-- **D)** Detecção de anomalias identifica outliers, não cria segmentos.
+- **A)** Classificação requer categorias já definidas para treinar — o cenário explicitamente diz que não existem.
+- **B)** Regressão prevê valores numéricos para cada cliente, não agrupa clientes similares.
+- **D)** Detecção de anomalias encontra outliers (comportamento anormal), não cria segmentos de clientes para marketing.
 
 </details>
 
@@ -54,24 +54,24 @@ D) Amazon Kendra
 
 ### Questão 3
 
-Uma empresa de logística quer prever o tempo de entrega em horas para cada pedido. Qual tipo de tarefa é essa?
+Uma empresa de logística processa 50.000 entregas por dia e quer prever o tempo estimado de entrega em horas para cada pedido, levando em conta distância, tráfego histórico e condições climáticas. A previsão será exibida ao cliente no momento da compra. Qual tipo de tarefa de ML é essa?
 
-A) Classificação  
-B) Regressão  
-C) Clustering  
-D) Recomendação  
+A) Classificação multiclasse — categorizar entregas como "rápida", "normal" ou "lenta"  
+B) Regressão — prever um valor numérico contínuo (horas até entrega)  
+C) Clustering — agrupar pedidos por similaridade de tempo  
+D) Recomendação — sugerir a melhor opção de frete ao cliente  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Regressão**
+**Resposta: B) Regressão — prever um valor numérico contínuo (horas até entrega)**
 
-✅ **Por que B está correta:** "Prever tempo em horas" é prever um valor numérico contínuo — regressão.
+✅ **Por que B está correta:** "Prever tempo em horas" é prever um valor numérico contínuo (ex: 4.5 horas, 23.2 horas) — regressão. O modelo aprende a relação entre features (distância, tráfego, clima) e o tempo de entrega.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Classificação prevê categorias, não valores numéricos.
-- **C)** Clustering agrupa dados, não faz previsões.
-- **D)** Recomendação sugere itens, não prevê valores.
+- **A)** Classificar em "rápida/normal/lenta" perderia a precisão numérica que o cenário requer — o cliente quer ver "Entrega em 4h", não "Entrega normal".
+- **C)** Clustering agrupa dados similares sem fazer previsões — não gera um tempo estimado para cada pedido.
+- **D)** Recomendação sugere itens a usuários. Prever tempo não é recomendar frete, é calcular uma estimativa.
 
 </details>
 
@@ -104,24 +104,24 @@ D) Amazon Translate
 
 ### Questão 5
 
-Uma empresa de manufatura quer identificar quando uma máquina está se comportando de forma anormal para agendar manutenção preventiva. Qual tarefa de ML melhor se aplica?
+Uma empresa de manufatura opera 200 máquinas CNC 24/7 e coleta dados de sensores (temperatura, vibração, pressão) em tempo real. A equipe de manutenção quer ser alertada quando uma máquina começar a se comportar de forma diferente do padrão histórico, permitindo intervenção antes da falha. Qual tarefa de ML melhor se aplica?
 
-A) Classificação multiclasse  
-B) Regressão  
-C) Detecção de anomalias  
-D) Recomendação  
+A) Classificação multiclasse para categorizar o tipo de falha iminente  
+B) Regressão para prever o número de dias até a próxima falha  
+C) Detecção de anomalias para identificar desvios do comportamento normal da máquina  
+D) Clustering para agrupar máquinas com padrões de desgaste similares  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: C) Detecção de anomalias**
+**Resposta: C) Detecção de anomalias para identificar desvios do comportamento normal da máquina**
 
-✅ **Por que C está correta:** "Comportamento anormal" é a definição de anomalia. O modelo aprende o padrão normal da máquina e identifica desvios que podem indicar falha iminente — manutenção preditiva clássica.
+✅ **Por que C está correta:** O cenário pede identificar "comportamento diferente do padrão histórico" — isso é exatamente detecção de anomalias. O modelo aprende o perfil normal dos sensores e alerta quando os valores desviam significativamente.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Classificação multiclasse precisaria de categorias definidas de falhas. O cenário quer detectar qualquer comportamento fora do normal.
-- **B)** Regressão preveria um valor (ex: dias até falha), mas o cenário quer detectar o comportamento anormal em si.
-- **D)** Recomendação sugere itens a usuários — não se aplica a monitoramento de máquinas.
+- **A)** Classificação de tipo de falha requer histórico rotulado de cada categoria de falha. O cenário quer detectar QUALQUER desvio, não categorizar tipos específicos.
+- **B)** Regressão de tempo-até-falha (RUL — Remaining Useful Life) é uma abordagem válida mas diferente. O cenário foca em "comportamento diferente" (anomalia), não em "quanto tempo falta" (previsão numérica).
+- **D)** Clustering agruparia máquinas por similaridade — útil para planejamento, mas não gera alertas em tempo real de comportamento anormal.
 
 </details>
 

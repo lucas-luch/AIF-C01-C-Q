@@ -54,24 +54,24 @@ D) AWS Config
 
 ### Questão 3
 
-Qual é a principal garantia do Amazon Bedrock em relação à privacidade dos dados dos clientes?
+Um CISO (Chief Information Security Officer) está avaliando o Amazon Bedrock para uso com dados corporativos sensíveis. A principal preocupação é que os prompts enviados e as respostas geradas possam ser usados para melhorar os modelos de terceiros (Anthropic, Meta, etc.), expondo informações proprietárias. Qual garantia o Bedrock oferece para mitigar essa preocupação?
 
-A) Dados são automaticamente anonimizados antes do processamento  
-B) Dados dos clientes NÃO são usados para treinar ou melhorar os modelos base  
-C) Dados são armazenados apenas por 24 horas  
-D) Todos os dados são processados on-premises  
+A) O Bedrock anonimiza automaticamente todos os dados antes de enviá-los aos provedores de modelos  
+B) Os dados dos clientes (prompts e respostas) NÃO são usados para treinar ou melhorar os modelos base de nenhum provedor  
+C) O Bedrock armazena os dados apenas por 24 horas e depois os exclui permanentemente  
+D) O Bedrock executa todos os modelos dentro da VPC do cliente, sem tráfego para servidores AWS  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Dados dos clientes NÃO são usados para treinar ou melhorar os modelos base**
+**Resposta: B) Os dados dos clientes (prompts e respostas) NÃO são usados para treinar ou melhorar os modelos base de nenhum provedor**
 
-✅ **Por que B está correta:** Bedrock garante que seus prompts, respostas e dados de fine-tuning permanecem privados e não são usados para treinar os modelos base de nenhum provedor.
+✅ **Por que B está correta:** Bedrock garante contratualmente que seus prompts, respostas e dados de fine-tuning permanecem privados e isolados por conta/região. Nenhum provedor de modelo (Anthropic, Meta, Stability AI, etc.) tem acesso para treinamento.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Bedrock não anonimiza automaticamente — você implementa via Guardrails PII se necessário.
-- **C)** Não há limite de 24 horas — logs são opcionais e com retenção configurável.
-- **D)** Bedrock é um serviço cloud, não on-premises.
+- **A)** Bedrock NÃO anonimiza automaticamente — se você precisa mascarar PII, deve implementar via Guardrails (PII filter) explicitamente.
+- **C)** Não existe regra de 24 horas. Logs de invocação são opcionais (opt-in via Model Invocation Logging) com retenção configurável pelo cliente.
+- **D)** Bedrock é um serviço gerenciado que roda na infraestrutura AWS, não dentro da VPC do cliente. Para tráfego privado, usa-se VPC Endpoints/PrivateLink (mas o processamento ainda é na AWS).
 
 </details>
 

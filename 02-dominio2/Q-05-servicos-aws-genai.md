@@ -104,24 +104,24 @@ D) Amazon Comprehend
 
 ### Questão 5
 
-Qual é a principal garantia de privacidade do Amazon Bedrock em relação aos dados dos clientes?
+Uma empresa de e-commerce está expandindo internacionalmente e precisa de um modelo que garanta privacidade dos dados dos clientes franceses sob o GDPR. A equipe está avaliando o Amazon Bedrock. Qual garantia o Bedrock oferece que é relevante para essa preocupação?
 
-A) Dados são armazenados em servidores on-premises do cliente  
-B) Dados de entrada e saída NÃO são usados para treinar os modelos base  
-C) Todos os dados são automaticamente anonimizados  
-D) Bedrock não armazena nenhum dado em nenhuma circunstância  
+A) O Bedrock processa dados exclusivamente em data centers europeus quando solicitado  
+B) Os dados de entrada e saída NÃO são usados para treinar os modelos base e permanecem isolados na conta/região do cliente  
+C) O Bedrock anonimiza automaticamente todos os dados de cidadãos europeus  
+D) O Bedrock não armazena nenhum dado em nenhuma circunstância, eliminando riscos de compliance  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Dados de entrada e saída NÃO são usados para treinar os modelos base**
+**Resposta: B) Os dados de entrada e saída NÃO são usados para treinar os modelos base e permanecem isolados na conta/região do cliente**
 
-✅ **Por que B está correta:** O Bedrock garante que seus prompts e respostas não são usados para treinar ou melhorar os modelos base de nenhum provedor. Seus dados permanecem privados na sua conta/região.
+✅ **Por que B está correta:** O Bedrock garante isolamento de dados: prompts e respostas permanecem privados na conta/região do cliente e não são compartilhados com provedores de modelos para treinamento. Isso atende requisitos de privacidade como GDPR quanto ao uso secundário de dados.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Bedrock é um serviço cloud — dados ficam na AWS, não on-premises.
-- **C)** Bedrock não anonimiza automaticamente — você precisa implementar (Guardrails PII filter).
-- **D)** Bedrock pode armazenar logs se habilitado (Model Invocation Logging é opt-in).
+- **A)** Bedrock está disponível em regiões europeias, mas o cliente que escolhe a região — não é automático "quando solicitado". Além disso, a garantia de privacidade vai além de localização geográfica.
+- **C)** Bedrock NÃO anonimiza automaticamente — o cliente deve implementar proteção de PII via Guardrails.
+- **D)** Bedrock pode armazenar logs se o Model Invocation Logging estiver habilitado (opt-in). A afirmação "nenhum dado em nenhuma circunstância" é falsa.
 
 </details>
 

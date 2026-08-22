@@ -54,24 +54,24 @@ D) Aumentar o dropout
 
 ### Questão 3
 
-Qual é a diferença entre parâmetros e hiperparâmetros de um modelo?
+Uma equipe está treinando um modelo de previsão de demanda no Amazon SageMaker. O cientista de dados configurou learning rate = 0.001 e epochs = 50 antes de iniciar o treinamento. Durante o treino, o algoritmo ajustou automaticamente milhões de pesos internos. Qual afirmação descreve corretamente a diferença entre esses elementos?
 
-A) Parâmetros são definidos pelo humano; hiperparâmetros são aprendidos pelo modelo  
-B) Parâmetros são aprendidos durante o treino; hiperparâmetros são definidos antes do treino  
-C) Parâmetros se referem apenas a redes neurais; hiperparâmetros se referem a qualquer modelo  
-D) Não há diferença — são sinônimos  
+A) Learning rate e epochs são parâmetros do modelo; os pesos ajustados são hiperparâmetros  
+B) Learning rate e epochs são hiperparâmetros definidos antes do treino; os pesos são parâmetros aprendidos durante o treino  
+C) Todos são parâmetros — a diferença é apenas quem os configura (humano vs máquina)  
+D) Learning rate é um hiperparâmetro, mas epochs é um parâmetro porque afeta diretamente o modelo  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Parâmetros são aprendidos durante o treino; hiperparâmetros são definidos antes do treino**
+**Resposta: B) Learning rate e epochs são hiperparâmetros definidos antes do treino; os pesos são parâmetros aprendidos durante o treino**
 
-✅ **Por que B está correta:** Parâmetros (pesos, coeficientes) são ajustados automaticamente pelo algoritmo durante o treino. Hiperparâmetros (learning rate, epochs, batch size) são configurações definidas pelo humano antes de iniciar o treinamento.
+✅ **Por que B está correta:** Hiperparâmetros (learning rate, epochs, batch size) são configurações definidas pelo humano ANTES do treinamento. Parâmetros (pesos, coeficientes) são ajustados automaticamente pelo algoritmo DURANTE o treinamento. São conceitos distintos com funções diferentes.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** É o inverso — parâmetros são aprendidos, hiperparâmetros são definidos pelo humano.
-- **C)** Ambos os conceitos se aplicam a qualquer modelo, não apenas redes neurais.
-- **D)** São conceitos distintos com papéis diferentes.
+- **A)** Inverte a definição — learning rate e epochs são hiperparâmetros (definidos antes), não parâmetros.
+- **C)** A diferença não é apenas "quem configura" — é QUANDO e COMO são determinados (antes do treino vs durante).
+- **D)** Epochs é um hiperparâmetro assim como learning rate — define quantas vezes o modelo vê os dados, não é um peso aprendido.
 
 </details>
 
@@ -107,24 +107,24 @@ E) Remover dados do conjunto de validação
 
 ### Questão 5
 
-Um modelo de ML é descrito como tendo "alto bias e baixa variância". Isso significa que:
+Uma equipe de ML está avaliando dois modelos de previsão de churn. O Modelo A usa regressão linear e consistentemente prevê taxas de churn 8% abaixo do valor real em todos os datasets testados. O Modelo B usa uma rede neural profunda e prevê valores muito diferentes dependendo de qual amostra de dados é usada (às vezes 15% acima, às vezes 20% abaixo). Qual é a caracterização correta desses modelos?
 
-A) O modelo é muito complexo e sensível a mudanças nos dados  
-B) O modelo faz suposições simplificadoras e consistentemente erra de forma similar  
-C) O modelo tem excelente performance em treino e teste  
-D) O modelo foi treinado com dados enviesados  
+A) Modelo A tem alta variância; Modelo B tem alto bias  
+B) Modelo A tem alto bias e baixa variância; Modelo B tem baixo bias e alta variância  
+C) Ambos os modelos estão com overfitting  
+D) Modelo A tem underfitting; Modelo B tem os dados enviesados  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) O modelo faz suposições simplificadoras e consistentemente erra de forma similar**
+**Resposta: B) Modelo A tem alto bias e baixa variância; Modelo B tem baixo bias e alta variância**
 
-✅ **Por que B está correta:** Alto bias = modelo simples demais que faz suposições erradas sobre os dados. Baixa variância = estável, não muda muito com dados diferentes. Resultado: consistentemente erra na mesma direção (underfitting).
+✅ **Por que B está correta:** Modelo A erra consistentemente na mesma direção (-8% sempre) = alto bias (suposição simplificadora) + baixa variância (estável entre datasets). Modelo B varia muito entre datasets = alta variância (sensível aos dados) — indicando overfitting potencial.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Isso descreve baixo bias + alta variância (overfitting).
-- **C)** Alto bias implica underfitting — performance ruim em ambos.
-- **D)** "Bias" aqui é um conceito estatístico (viés do modelo), não viés nos dados de treino.
+- **A)** Inverte os diagnósticos — consistência de erro = baixa variância (Modelo A), não alta.
+- **C)** Modelo A não tem overfitting — tem underfitting (erro consistente, modelo simples demais).
+- **D)** A primeira parte está parcialmente certa (Modelo A = underfitting), mas o problema do Modelo B é alta variância, não dados enviesados.
 
 </details>
 

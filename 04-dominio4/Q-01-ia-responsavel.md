@@ -54,24 +54,24 @@ D) Usar um modelo maior
 
 ### Questão 3
 
-Qual é o propósito das AWS AI Service Cards?
+Uma empresa de saúde desenvolveu um modelo de IA para priorizar pacientes em filas de espera. O regulador exige documentação sobre as limitações do modelo, os cenários de uso pretendido e as avaliações de fairness realizadas. Onde a AWS publica esse tipo de informação para seus próprios serviços de IA?
 
-A) Gerenciar billing e custos dos serviços de IA  
-B) Fornecer transparência sobre limitações, uso pretendido e avaliações de fairness dos serviços de IA  
-C) Configurar permissões IAM para serviços de IA  
-D) Monitorar performance de modelos em produção  
+A) AWS Well-Architected Framework — pilar de Excelência Operacional  
+B) AWS AI Service Cards — documentação de transparência com limitações, uso pretendido e fairness  
+C) AWS Shared Responsibility Model — define o que é responsabilidade do cliente vs AWS  
+D) Amazon SageMaker Model Cards — registro de metadados dos modelos customizados do cliente  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Fornecer transparência sobre limitações, uso pretendido e avaliações de fairness dos serviços de IA**
+**Resposta: B) AWS AI Service Cards — documentação de transparência com limitações, uso pretendido e fairness**
 
-✅ **Por que B está correta:** AI Service Cards são documentação de transparência publicada pela AWS para seus serviços de IA. Descrevem: uso pretendido, limitações, decisões de design, métricas de fairness e melhores práticas.
+✅ **Por que B está correta:** AI Service Cards são documentação de transparência publicada pela AWS para seus serviços de IA (Rekognition, Textract, etc.). Descrevem: uso pretendido, limitações conhecidas, decisões de design, e métricas de fairness — exatamente o que o regulador pede como referência.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Billing é gerenciado no console AWS / Cost Explorer, não em Service Cards.
-- **C)** Permissões IAM são configuradas via policies/roles, não Service Cards.
-- **D)** Monitoramento é feito por SageMaker Model Monitor / CloudWatch.
+- **A)** Well-Architected Framework cobre melhores práticas de arquitetura cloud (não específico de IA/fairness).
+- **C)** Shared Responsibility Model define divisão de segurança (AWS cuida da infra, cliente cuida dos dados/apps), não transparência de IA.
+- **D)** SageMaker Model Cards são para SEUS modelos customizados — você cria para documentar os próprios modelos. AI Service Cards são o que a AWS publica sobre os serviços DELA.
 
 </details>
 
@@ -104,24 +104,24 @@ D) AWS Config
 
 ### Questão 5
 
-Quando o Amazon Augmented AI (A2I) deve ser usado?
+Uma empresa de varejo implantou um modelo de ML para aprovar ou rejeitar pedidos de crédito automaticamente. O regulador exige que decisões de alto impacto financeiro tenham supervisão humana antes de serem finalizadas, especialmente quando o modelo tem baixa confiança. Qual serviço AWS implementa esse requisito?
 
-A) Para treinar modelos mais rapidamente  
-B) Para incluir revisão humana quando a IA tem baixa confiança em suas previsões  
-C) Para criptografar dados em trânsito  
-D) Para otimizar custos de inferência  
+A) Amazon SageMaker Clarify para detectar viés antes da aprovação  
+B) Amazon Augmented AI (A2I) para incluir revisão humana quando a confiança é baixa  
+C) Amazon Bedrock Guardrails para bloquear decisões financeiras do modelo  
+D) SageMaker Model Monitor para detectar degradação do modelo e pausar decisões  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Para incluir revisão humana quando a IA tem baixa confiança em suas previsões**
+**Resposta: B) Amazon Augmented AI (A2I) para incluir revisão humana quando a confiança é baixa**
 
-✅ **Por que B está correta:** A2I implementa human-in-the-loop — quando a confiança do modelo está abaixo de um threshold ou em categorias de risco, a previsão é encaminhada para revisão humana antes da decisão final.
+✅ **Por que B está correta:** A2I implementa human-in-the-loop — quando a confiança do modelo está abaixo de um threshold configurável, a decisão é encaminhada para revisão humana antes de ser finalizada. Atende exatamente o requisito regulatório descrito.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** A2I não acelera treinamento — opera na inferência (pós-previsão).
-- **C)** Criptografia é função de TLS/KMS, não A2I.
-- **D)** A2I adiciona custo (humanos revisando), não otimiza custos.
+- **A)** Clarify detecta viés e explica previsões, mas não intercepta decisões em tempo real para revisão humana.
+- **C)** Guardrails filtram conteúdo de LLMs (texto) — não se aplicam a modelos de classificação/crédito.
+- **D)** Model Monitor detecta drift e gera alertas, mas não intercepta decisões individuais para revisão humana em tempo real.
 
 </details>
 

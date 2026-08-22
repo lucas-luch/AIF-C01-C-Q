@@ -79,24 +79,24 @@ D) Depende apenas do número de epochs usado no treino
 
 ### Questão 4
 
-Qual métrica é usada para avaliar a qualidade de um modelo que gera resumos de texto?
+Uma empresa de mídia está usando IA generativa para criar resumos automáticos de artigos de notícias. A equipe precisa avaliar se os resumos gerados capturam os pontos-chave dos artigos originais. Qual métrica é projetada especificamente para avaliar a qualidade de resumos de texto?
 
-A) BLEU  
-B) ROUGE  
-C) AUC-ROC  
-D) RMSE  
+A) BLEU, que mede precisão de n-grams comparando com referências  
+B) ROUGE, que mede cobertura do conteúdo de referência nos resumos gerados  
+C) AUC-ROC, que mede a capacidade discriminativa do modelo  
+D) Perplexidade, que mede quão bem o modelo prevê a próxima palavra  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) ROUGE**
+**Resposta: B) ROUGE, que mede cobertura do conteúdo de referência nos resumos gerados**
 
-✅ **Por que B está correta:** ROUGE (Recall-Oriented Understudy for Gisting Evaluation) mede a sobreposição entre o texto gerado e um texto de referência. Foi projetada especificamente para avaliar resumos.
+✅ **Por que B está correta:** ROUGE (Recall-Oriented Understudy for Gisting Evaluation) mede a sobreposição entre o texto gerado e uma referência, focando em recall — quantos dos conceitos/termos importantes do original aparecem no resumo. Foi projetada especificamente para avaliação de resumos.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** BLEU é usada para avaliar tradução automática, não resumos.
-- **C)** AUC-ROC é para classificação binária, não geração de texto.
-- **D)** RMSE é para regressão numérica.
+- **A)** BLEU mede precisão (do gerado, quanto está na referência) e foi projetada para tradução automática, não resumos. ROUGE foca em recall (da referência, quanto está no gerado).
+- **C)** AUC-ROC é para modelos de classificação binária — não se aplica a avaliação de texto gerado.
+- **D)** Perplexidade mede a fluência/qualidade linguística do modelo, não se o resumo captura os pontos corretos.
 
 </details>
 

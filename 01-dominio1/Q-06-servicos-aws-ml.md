@@ -54,24 +54,24 @@ D) Amazon Lex
 
 ### Questão 3
 
-Uma empresa quer permitir que funcionários façam perguntas em linguagem natural sobre documentos internos e recebam respostas precisas. Qual serviço é mais adequado?
+Uma empresa de 5.000 funcionários quer permitir que qualquer colaborador faça perguntas em linguagem natural sobre documentos internos (políticas de RH, manuais técnicos, procedimentos) e receba respostas precisas extraídas diretamente desses documentos. A empresa não quer construir ou treinar modelos customizados. Qual serviço AWS é mais adequado?
 
-A) Amazon Athena  
-B) Amazon Kendra  
-C) Amazon Comprehend  
-D) Amazon Translate  
+A) Amazon Athena para consultar os documentos armazenados no S3 com SQL  
+B) Amazon Kendra para busca empresarial inteligente com NLP sobre documentos corporativos  
+C) Amazon Comprehend para extrair entidades e sentimento dos documentos  
+D) Amazon Bedrock Knowledge Bases para implementar RAG com Foundation Models  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) Amazon Kendra**
+**Resposta: B) Amazon Kendra para busca empresarial inteligente com NLP sobre documentos corporativos**
 
-✅ **Por que B está correta:** Amazon Kendra é um serviço de busca empresarial inteligente que usa NLP para entender perguntas em linguagem natural e encontrar respostas precisas em documentos corporativos.
+✅ **Por que B está correta:** Amazon Kendra é um serviço de busca empresarial inteligente que usa NLP para entender perguntas em linguagem natural e retornar respostas precisas de documentos corporativos — sem necessidade de treinar modelos. Integra com múltiplas fontes (S3, SharePoint, Confluence, etc.).
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Athena executa consultas SQL em dados no S3 — requer SQL, não linguagem natural.
-- **C)** Comprehend analisa texto (sentimento, entidades) mas não faz busca em documentos.
-- **D)** Translate traduz entre idiomas, não busca informação.
+- **A)** Athena executa consultas SQL em dados estruturados/semi-estruturados no S3 — requer conhecimento de SQL e não entende linguagem natural sobre documentos textuais.
+- **C)** Comprehend analisa texto (sentimento, entidades, tópicos) mas não faz busca nem responde perguntas — processa texto, não busca informação.
+- **D)** Knowledge Bases com Bedrock é uma opção válida para RAG, mas requer configuração de FM + vector database + indexação. O cenário pede algo direto "sem construir modelos" — Kendra é totalmente gerenciado para busca.
 
 </details>
 

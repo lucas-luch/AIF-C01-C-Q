@@ -79,24 +79,24 @@ D) Limitar o número de tokens na resposta
 
 ### Questão 4
 
-Uma empresa está construindo um chatbot de FAQ. As respostas devem ser baseadas APENAS em documentos fornecidos, sem informação inventada. Qual combinação é mais adequada?
+Uma empresa de telecomunicações está construindo um chatbot para atendimento ao cliente. As respostas devem ser baseadas EXCLUSIVAMENTE nos documentos de FAQ e políticas da empresa — o chatbot nunca deve gerar informações que não estejam nesses documentos. A equipe testou apenas prompt engineering, mas o modelo ainda inventa informações quando não encontra a resposta. Qual combinação resolve o problema?
 
-A) Fine-tuning do modelo  
-B) RAG + prompt engineering com instrução restritiva  
-C) Aumentar a temperature para respostas mais completas  
-D) Zero-shot sem contexto adicional  
+A) Fine-tuning do modelo com os documentos de FAQ para internalizar todo o conhecimento  
+B) RAG para buscar documentos relevantes + prompt engineering com instrução restritiva ("responda APENAS com base no contexto fornecido")  
+C) Aumentar a context window usando um modelo maior para caber todos os documentos  
+D) Few-shot prompting com exemplos de respostas corretas para cada categoria de pergunta  
 
 <details>
 <summary>🔍 Ver resposta</summary>
 
-**Resposta: B) RAG + prompt engineering com instrução restritiva**
+**Resposta: B) RAG para buscar documentos relevantes + prompt engineering com instrução restritiva**
 
-✅ **Por que B está correta:** RAG busca a informação relevante dos documentos e injeta no contexto. Combinado com prompt engineering ("responda APENAS com base no contexto fornecido"), minimiza alucinações e garante respostas fundamentadas.
+✅ **Por que B está correta:** RAG busca a informação relevante dos documentos e injeta no contexto. Combinado com prompt restritivo ("responda APENAS com base no contexto fornecido; se não encontrar, diga que não tem essa informação"), minimiza alucinações e garante respostas fundamentadas nos documentos reais.
 
 ❌ **Por que as outras estão erradas:**
-- **A)** Fine-tuning muda o estilo, mas não previne alucinações nem traz dados atualizados.
-- **C)** Temperature alta aumenta aleatoriedade — piora o problema.
-- **D)** Zero-shot sem contexto forçaria o modelo a usar apenas conhecimento interno — alucinações prováveis.
+- **A)** Fine-tuning muda o estilo do modelo mas NÃO previne alucinações — o modelo pode gerar informação plausível que não existe nos docs. Além disso, quando os FAQs mudam, seria necessário re-treinar.
+- **C)** Mesmo com context window enorme, colocar TODOS os documentos no prompt é impraticável e caro. RAG busca apenas o trecho relevante — muito mais eficiente.
+- **D)** Few-shot ajuda no formato de resposta, mas não resolve o problema central: o modelo não tem acesso aos documentos corretos e inventa quando não sabe.
 
 </details>
 
