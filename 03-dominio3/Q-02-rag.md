@@ -125,3 +125,129 @@ D) RAG funciona sem nenhuma infraestrutura adicional
 
 </details>
 
+
+
+---
+
+### Questão 6
+
+Uma empresa implementou RAG com Bedrock Knowledge Bases. O retrieval está retornando chunks relevantes, mas as respostas do FM ainda contêm informações que NÃO estão nos chunks retornados. A equipe suspeita que o modelo está "complementando" com conhecimento do pré-treinamento. Qual é a solução MAIS eficaz?
+
+A) Aumentar o número de chunks retornados de 3 para 20  
+B) Adicionar instrução no prompt: "Responda APENAS com base nos documentos fornecidos. Não use conhecimento externo."  
+C) Trocar para um modelo maior que alucine menos  
+D) Reduzir a temperature para 0 para eliminar aleatoriedade  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Adicionar instrução restritiva no prompt**
+
+✅ **Por que B está correta:** Quando o retrieval funciona mas o FM "complementa", o problema é a instrução. Um prompt restritivo ("use APENAS o contexto fornecido") direciona o modelo a não usar conhecimento do pré-treinamento. É a combinação RAG + prompt engineering.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Mais chunks não resolvem o modelo inventando ALÉM dos chunks — podem até confundir mais com informação irrelevante.
+- **C)** Modelos maiores podem alucinar igualmente — tamanho não resolve uso indevido de conhecimento prévio.
+- **D)** Temperature 0 torna respostas determinísticas mas o modelo AINDA usa conhecimento do pré-treinamento se não for instruído a restringir.
+
+</details>
+
+---
+
+### Questão 7
+
+Uma empresa está configurando RAG e precisa decidir o tamanho dos chunks para indexação. Seus documentos são manuais técnicos com seções de 2-3 parágrafos que cobrem um tópico completo cada. A equipe quer maximizar a relevância do contexto retornado. Qual estratégia de chunking é MAIS adequada?
+
+A) Chunks de 50 tokens — máxima granularidade para precisão  
+B) Chunks alinhados com as seções temáticas dos documentos (~300-500 tokens) preservando contexto completo  
+C) Um único chunk por documento inteiro (~10.000 tokens) para não perder contexto  
+D) Chunks fixos de 100 tokens com 0% de overlap  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Chunks alinhados com seções temáticas preservando contexto completo**
+
+✅ **Por que B está correta:** Seções de 2-3 parágrafos que cobrem um tópico completo são unidades naturais de informação. Chunking por seção preserva contexto semântico — o FM recebe informação completa e coerente sobre o tema buscado.
+
+❌ **Por que as outras estão erradas:**
+- **A)** 50 tokens fragmentam informação — um chunk não terá contexto suficiente para uma resposta útil.
+- **C)** 10.000 tokens por documento excede o que pode ser injetado no prompt (e a maioria será irrelevante para a query).
+- **D)** 100 tokens sem overlap cria fronteiras artificiais que cortam frases no meio — perda de coerência.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa está usando Bedrock Knowledge Bases com OpenSearch Serverless como vector database. O custo de busca está alto. Qual fator MAIS afeta o custo do componente de retrieval no RAG?
+
+A) O tamanho do Foundation Model usado para geração  
+B) O número e dimensionalidade dos embeddings armazenados no vector database  
+C) A temperature configurada para geração  
+D) O número de tokens na resposta final  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) O número e dimensionalidade dos embeddings no vector database**
+
+✅ **Por que B está correta:** O custo de retrieval depende do volume de dados indexados (número de chunks) e da dimensão dos vetores (1024, 1536, etc.). Mais chunks = mais storage + mais compute para busca por similaridade. Embeddings de alta dimensão também custam mais.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Tamanho do FM afeta custo de GERAÇÃO, não de retrieval (busca).
+- **C)** Temperature é parâmetro de inferência do FM — não afeta custo de busca vetorial.
+- **D)** Tokens de resposta afetam custo de GERAÇÃO no FM, não retrieval no vector DB.
+
+</details>
+
+---
+
+### Questão 9
+
+Uma empresa farmacêutica quer implementar RAG para que pesquisadores consultem papers científicos. Os papers contêm fórmulas químicas, tabelas de dados e figuras. A equipe nota que o RAG retorna chunks irrelevantes quando pesquisadores buscam informações de tabelas. Qual é a causa MAIS provável?
+
+A) O modelo de embeddings é muito pequeno  
+B) Tabelas e dados estruturados são mal representados pelo chunking/embedding de texto padrão  
+C) A context window do FM é insuficiente  
+D) O vector database não suporta dados científicos  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Tabelas e dados estruturados são mal representados pelo chunking/embedding de texto padrão**
+
+✅ **Por que B está correta:** Embeddings de texto são otimizados para prosa/parágrafos. Tabelas, quando convertidas em texto plano, perdem estrutura (linhas, colunas, relações entre dados) — os embeddings resultantes não capturam o significado tabular. Solução: pré-processamento especializado para tabelas.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Modelo de embeddings maior ajuda em geral, mas não resolve o problema fundamental de representação de tabelas.
+- **C)** Context window suficiente não ajuda se os chunks errados são recuperados.
+- **D)** Vector databases são agnósticos ao tipo de dado — o problema está na qualidade dos embeddings, não no banco.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma empresa implementou RAG e mede a qualidade com duas métricas: "retrieval accuracy" (chunks corretos retornados) e "generation quality" (resposta final útil). O retrieval accuracy é 95% mas generation quality é apenas 60%. Qual componente precisa ser melhorado PRIMEIRO?
+
+A) O modelo de embeddings — para melhorar retrieval  
+B) O prompt do FM e/ou o FM usado — para melhorar como o modelo utiliza o contexto retornado  
+C) O vector database — para busca mais rápida  
+D) O tamanho dos chunks — para melhorar retrieval  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) O prompt do FM e/ou o FM usado — para melhorar geração a partir do contexto**
+
+✅ **Por que B está correta:** Retrieval está bom (95%) — os documentos certos chegam ao FM. O problema é na GERAÇÃO: o FM não está usando bem o contexto. Solução: melhorar o prompt (instruções mais claras) ou trocar para um FM mais capaz de síntese/compreensão.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Embeddings/retrieval já está em 95% — não é o gargalo.
+- **C)** Velocidade do vector DB não afeta qualidade das respostas.
+- **D)** Tamanho dos chunks afeta retrieval — que já está bom.
+
+</details>

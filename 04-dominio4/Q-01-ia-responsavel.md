@@ -150,3 +150,132 @@ D) Viés de medição
 
 </details>
 
+
+
+---
+
+### Questão 7
+
+Uma empresa de recrutamento usa um modelo de ML para ranquear candidatos. A equipe descobriu que candidatos com nomes associados a minorias étnicas recebem scores sistematicamente mais baixos, mesmo com qualificações idênticas. Qual tipo de viés é MAIS provável e qual a causa raiz?
+
+A) Viés algorítmico — o algoritmo escolhido é inerentemente discriminatório  
+B) Viés nos dados de treinamento — os dados históricos refletem decisões humanas preconceituosas  
+C) Viés de automação — os recrutadores confiam demais no modelo  
+D) Viés de medição — a métrica usada é inadequada  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Viés nos dados de treinamento — dados históricos refletem decisões preconceituosas**
+
+✅ **Por que B está correta:** Se o modelo aprendeu com decisões históricas de humanos que discriminavam (consciente ou inconscientemente), ele reproduz esse padrão. O viés está nos DADOS (rótulos históricos com preconceito), não no algoritmo em si.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Algoritmos são neutros — aprendem padrões dos dados. O mesmo algoritmo com dados sem viés não discriminaria.
+- **C)** Viés de automação é quando humanos aceitam output da IA sem questionar — é um problema diferente (no uso, não no modelo).
+- **D)** Viés de medição seria usar métrica errada para avaliar. Aqui o modelo está ativamente discriminando, não sendo mal-avaliado.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa quer avaliar se seu modelo de IA generativa gera respostas ofensivas, estereotipadas ou perigosas. Precisa testar isso ANTES de lançar em produção com uma avaliação estruturada. Qual abordagem de responsible AI é MAIS adequada?
+
+A) Deployar em produção e monitorar reclamações de usuários  
+B) Red teaming — testar adversarialmente o modelo com prompts projetados para provocar respostas problemáticas  
+C) Aumentar o tamanho do modelo para melhorar a qualidade geral  
+D) Usar apenas temperature = 0 para eliminar respostas imprevisíveis  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Red teaming — testar adversarialmente antes do deploy**
+
+✅ **Por que B está correta:** Red teaming é a prática de testar modelos com prompts adversariais projetados para revelar comportamentos indesejados (toxicidade, estereótipos, jailbreaks) ANTES do deploy. É uma etapa fundamental de responsible AI.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Esperar reclamações em produção expõe usuários a conteúdo problemático — irresponsável e potencialmente ilegal.
+- **C)** Modelo maior não garante comportamento seguro — modelos grandes podem ser tão ou mais tóxicos.
+- **D)** Temperature 0 não elimina respostas problemáticas — apenas torna output determinístico (pode ser deterministicamente ofensivo).
+
+</details>
+
+---
+
+### Questão 9
+
+Uma seguradora implantou um modelo que automaticamente rejeita pedidos de indenização. Um cliente recebeu rejeição sem explicação. O regulador exige que toda decisão automatizada que impacte financeiramente o cliente tenha explicação compreensível. Qual combinação de práticas de IA responsável atende AMBOS os requisitos (explicabilidade + supervisão)?
+
+A) Aumentar a acurácia do modelo para reduzir rejeições incorretas  
+B) Implementar explicabilidade (SHAP values) para cada decisão + Amazon A2I para revisão humana de rejeições  
+C) Usar apenas Guardrails para filtrar respostas sem explicação  
+D) Re-treinar o modelo com mais dados para eliminar erros  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Explicabilidade (SHAP) + A2I para revisão humana de rejeições**
+
+✅ **Por que B está correta:** SHAP values explicam POR QUE o modelo rejeitou (quais fatores contribuíram — atende explicabilidade). A2I encaminha rejeições para revisão humana antes de notificar o cliente (atende supervisão). Juntos, cumprem ambos os requisitos regulatórios.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Mais acurácia não fornece explicação ao cliente nem supervisão humana.
+- **C)** Guardrails filtram conteúdo de LLMs — não explicam decisões de modelos de classificação nem implementam revisão humana.
+- **D)** Mais dados podem melhorar o modelo, mas não explicam decisões individuais nem adicionam supervisão.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma empresa está documentando seu modelo de ML para compliance. O regulador exige documentação sobre: propósito do modelo, limitações conhecidas, métricas de fairness por subgrupo, e dados de treinamento usados. Qual ferramenta AWS permite criar essa documentação de forma estruturada?
+
+A) AWS CloudTrail — registra chamadas de API  
+B) Amazon SageMaker Model Cards — documentação estruturada de modelos com propósito, limitações e métricas  
+C) Amazon SageMaker Model Monitor — monitora drift em produção  
+D) AWS AI Service Cards — documentação dos serviços pré-treinados da AWS  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon SageMaker Model Cards — documentação estruturada de modelos**
+
+✅ **Por que B está correta:** Model Cards permitem documentar: propósito/uso pretendido, limitações, métricas de performance por subgrupo (fairness), dados de treinamento, e considerações éticas. É a ferramenta da AWS para documentação de governança de modelos CUSTOMIZADOS.
+
+❌ **Por que as outras estão erradas:**
+- **A)** CloudTrail audita QUEM fez QUAL ação (chamadas de API) — não documenta características do modelo.
+- **C)** Model Monitor monitora drift em tempo real — não cria documentação de governança.
+- **D)** AI Service Cards documentam os serviços pré-treinados da AWS (Rekognition, Textract) — não os modelos CUSTOMIZADOS do cliente.
+
+</details>
+
+---
+
+### Questão 11 (Múltipla Resposta)
+
+Uma empresa está implementando práticas de IA responsável. Quais princípios fazem parte do framework de Responsible AI da AWS? **(Selecione DUAS)**
+
+A) Maximizar lucro é o principal objetivo de IA responsável  
+B) Fairness — sistemas devem tratar subgrupos de forma equitativa  
+C) Velocidade — modelos devem sempre priorizar latência sobre segurança  
+D) Transparência — limitações e capacidades devem ser documentadas e comunicadas  
+E) Complexidade — modelos mais complexos são mais responsáveis  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Respostas: B e D**
+
+✅ **Por que B está correta:** Fairness é pilar central de IA responsável — modelos não devem discriminar por gênero, raça, idade ou outras características protegidas.
+
+✅ **Por que D está correta:** Transparência é fundamental — usuários e stakeholders devem entender o que o modelo faz, suas limitações, e como decisões são tomadas.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Lucro não é um princípio de IA responsável — responsabilidade pode implicar custos adicionais (revisão humana, auditoria).
+- **C)** Segurança nunca deve ser sacrificada por velocidade — é um trade-off, não uma prioridade absoluta.
+- **E)** Complexidade geralmente REDUZ explicabilidade — modelos mais simples são frequentemente mais responsáveis.
+
+</details>

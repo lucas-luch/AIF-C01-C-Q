@@ -153,3 +153,154 @@ E) Implantar o modelo em um endpoint
 
 </details>
 
+
+
+---
+
+### Questão 7
+
+Uma equipe implantou um modelo de scoring de crédito há 6 meses. A taxa de inadimplência real está 40% maior que o previsto pelo modelo, mas os dados de entrada (renda, idade, histórico) não mudaram significativamente de perfil. Qual tipo de drift MAIS provavelmente explica essa degradação?
+
+A) Data drift — a distribuição das features de entrada mudou  
+B) Concept drift — a relação entre as features e o target mudou  
+C) Model drift — os pesos do modelo se corromperam em produção  
+D) Feature drift — novas features surgiram que não existiam no treino  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Concept drift — a relação entre as features e o target mudou**
+
+✅ **Por que B está correta:** Os inputs NÃO mudaram (confirmado no enunciado), mas o output está errado. Isso indica que a RELAÇÃO entre features e inadimplência mudou (ex: uma crise econômica alterou o comportamento de pagamento de pessoas com o mesmo perfil). Isso é concept drift.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Data drift é quando os inputs mudam de perfil — o cenário explicita que NÃO mudaram.
+- **C)** "Pesos corrompidos em produção" não é um fenômeno real de ML — modelos deployados são estáticos.
+- **D)** Feature drift não é um termo padrão. A ausência de features novas não explica degradação.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa de e-commerce está no início do ciclo de vida de ML para um sistema de recomendação. A equipe coletou dados brutos de 3 fontes: banco transacional, logs de navegação e reviews de clientes. Os dados contêm formatos inconsistentes, valores faltantes e duplicatas. Qual etapa do ciclo de vida estão executando e qual serviço AWS é MAIS adequado para essa tarefa?
+
+A) Treinamento do modelo — Amazon SageMaker Autopilot  
+B) Coleta e preparação de dados — AWS Glue DataBrew  
+C) Avaliação do modelo — Amazon SageMaker Model Monitor  
+D) Deploy — Amazon SageMaker Endpoints  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Coleta e preparação de dados — AWS Glue DataBrew**
+
+✅ **Por que B está correta:** Dados brutos com formatos inconsistentes, valores faltantes e duplicatas = etapa de preparação/limpeza. Glue DataBrew é a ferramenta visual de preparação de dados da AWS (no-code, 250+ transformações prontas).
+
+❌ **Por que as outras estão erradas:**
+- **A)** Autopilot treina modelos — os dados ainda não estão prontos para treino.
+- **C)** Model Monitor monitora modelos em PRODUÇÃO — não existe modelo ainda.
+- **D)** Endpoints são para inferência após deploy — estamos nas etapas iniciais.
+
+</details>
+
+---
+
+### Questão 9
+
+Uma empresa treinou um modelo de classificação de imagens que atingiu 95% de acurácia no conjunto de teste. Após o deploy em produção, a equipe quer ser notificada automaticamente se a qualidade das previsões degradar OU se os dados de entrada começarem a divergir dos dados de treino. Qual serviço AWS implementa AMBOS os monitoramentos?
+
+A) Amazon CloudWatch com alarmes customizados  
+B) Amazon SageMaker Model Monitor  
+C) AWS CloudTrail para auditar chamadas de inferência  
+D) Amazon SageMaker Clarify para detectar viés contínuo  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon SageMaker Model Monitor**
+
+✅ **Por que B está correta:** Model Monitor detecta AMBOS: data quality monitoring (inputs divergindo dos dados de treino = data drift) E model quality monitoring (previsões degradando = model drift). Gera alertas automáticos via CloudWatch quando thresholds são violados.
+
+❌ **Por que as outras estão erradas:**
+- **A)** CloudWatch monitora métricas de infraestrutura (latência, CPU). Não analisa distribuição estatística de features nem qualidade de previsões ML.
+- **C)** CloudTrail audita QUEM fez chamadas de API — não monitora qualidade das previsões.
+- **D)** Clarify detecta viés e explica previsões, mas não monitora drift de dados nem degradação contínua em produção da mesma forma que Model Monitor.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma equipe precisa re-treinar um modelo de previsão de vendas mensalmente com novos dados. O pipeline deve ser: extrair dados do S3 → preparar features → treinar modelo → avaliar → registrar no Model Registry → deploy se aprovado. Qual serviço AWS orquestra esse pipeline end-to-end de forma AUTOMATIZADA?
+
+A) AWS Step Functions para orquestrar Lambda functions  
+B) Amazon SageMaker Pipelines  
+C) AWS CodePipeline para CI/CD  
+D) Amazon EventBridge para disparar jobs  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon SageMaker Pipelines**
+
+✅ **Por que B está correta:** SageMaker Pipelines é projetado especificamente para MLOps — orquestra pipelines de ML com etapas de processamento, treinamento, avaliação e registro de modelo. Integra nativamente com Model Registry e SageMaker.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Step Functions é um orquestrador genérico — funciona, mas SageMaker Pipelines é a solução nativa de MLOps com integração direta ao ecossistema ML.
+- **C)** CodePipeline é para CI/CD de aplicações de software, não pipelines de ML.
+- **D)** EventBridge dispara eventos, mas não orquestra um pipeline multi-etapa completo com avaliação e aprovação.
+
+</details>
+
+---
+
+### Questão 11
+
+Uma startup está definindo a arquitetura de ML e precisa decidir como implantar o modelo. O modelo será usado por um aplicativo mobile que exige respostas em menos de 100ms, com tráfego variável (picos de 10.000 requisições/segundo em promoções). Qual tipo de deploy é MAIS adequado?
+
+A) Batch transform processando requisições em lotes a cada hora  
+B) Real-time endpoint com auto-scaling configurado para o tráfego variável  
+C) Edge deployment no dispositivo mobile do usuário  
+D) Endpoint assíncrono com fila de processamento  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Real-time endpoint com auto-scaling configurado para o tráfego variável**
+
+✅ **Por que B está correta:** Latência < 100ms + tráfego variável com picos = real-time endpoint com auto-scaling. O endpoint escala horizontalmente durante picos e reduz em períodos calmos.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Batch transform processa lotes periodicamente — não atende requisito de latência < 100ms em tempo real.
+- **C)** Edge no mobile reduziria latência, mas modelos complexos podem não caber no dispositivo e não mencionam requisitos offline.
+- **D)** Endpoint assíncrono processa via fila — adiciona latência (segundos a minutos), não atende < 100ms.
+
+</details>
+
+---
+
+### Questão 12
+
+Uma equipe de ML descobriu que seu modelo de previsão de churn tem desempenho excelente em clientes urbanos mas péssimo em clientes rurais. A hipótese é que os dados de treino têm 95% clientes urbanos e 5% rurais. Em qual etapa do ciclo de vida esse problema deveria ter sido identificado PRIMEIRO?
+
+A) Deploy — ao monitorar previsões em produção por segmento  
+B) Coleta e preparação — ao analisar a representatividade dos dados (EDA)  
+C) Treinamento — ao verificar a loss function durante o treino  
+D) Definição do problema — ao definir os requisitos de negócio  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Coleta e preparação — ao analisar a representatividade dos dados (EDA)**
+
+✅ **Por que B está correta:** Análise Exploratória de Dados (EDA) durante a preparação deveria revelar o desbalanceamento geográfico (95/5). Esse é o momento correto para identificar problemas de representatividade ANTES de treinar.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Descobrir em produção é válido (Model Monitor), mas é TARDE demais — o problema deveria ser pego antes.
+- **C)** Loss function mede erro geral, não por segmento. O desbalanceamento passaria despercebido no treino sem análise específica.
+- **D)** Definição do problema especifica O QUE resolver, não analisa dados — dados ainda não foram coletados nessa etapa.
+
+</details>

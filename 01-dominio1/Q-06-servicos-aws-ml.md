@@ -128,3 +128,129 @@ E) Amazon Fraud Detector
 
 </details>
 
+
+
+---
+
+### Questão 6
+
+Uma startup de saúde quer criar um modelo de ML para prever risco cardiovascular usando dados tabulares (idade, colesterol, pressão arterial, etc.). A equipe tem um cientista de dados júnior que conhece Python básico. Quer a abordagem que AUTOMATIZE ao máximo a seleção de algoritmo e hiperparâmetros. Qual serviço é MAIS adequado?
+
+A) Amazon SageMaker Canvas — interface visual sem código  
+B) Amazon SageMaker Autopilot — AutoML que testa múltiplos algoritmos automaticamente  
+C) Amazon Bedrock — usar um LLM para analisar os dados  
+D) Amazon Comprehend — classificação pré-treinada  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon SageMaker Autopilot — AutoML que testa múltiplos algoritmos automaticamente**
+
+✅ **Por que B está correta:** Autopilot é AutoML: você fornece os dados, ele testa múltiplos algoritmos (XGBoost, linear, etc.) com diferentes hiperparâmetros automaticamente e retorna o melhor modelo. O cientista júnior com Python básico consegue usar no SageMaker Studio.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Canvas é no-code para analistas de NEGÓCIO sem programação. O cientista sabe Python e precisa de mais controle/automação avançada.
+- **C)** Bedrock/LLMs não são para previsão tabular (dados numéricos estruturados) — são para geração de texto.
+- **D)** Comprehend faz NLP (sentimento, entidades) — não treina modelos customizados com dados tabulares.
+
+</details>
+
+---
+
+### Questão 7
+
+Uma empresa de varejo com 200 lojas precisa de previsão de demanda para 50.000 SKUs considerando sazonalidade, promoções e feriados. A equipe de supply chain NÃO tem experiência em ML e precisa de uma solução totalmente gerenciada que se integre com dados de séries temporais do S3. Qual serviço é MAIS adequado?
+
+A) Amazon SageMaker com algoritmo DeepAR customizado  
+B) Amazon Forecast com dados de séries temporais e metadados de itens  
+C) Amazon Personalize para recomendar produtos baseado em demanda  
+D) Amazon Bedrock para analisar tendências de vendas com IA generativa  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Forecast com dados de séries temporais e metadados de itens**
+
+✅ **Por que B está correta:** Forecast é totalmente gerenciado, projetado para séries temporais com variáveis externas (promoções, feriados). Não requer experiência ML — importa dados do S3 e gera previsões automaticamente.
+
+❌ **Por que as outras estão erradas:**
+- **A)** SageMaker com DeepAR requer expertise ML para configurar, treinar e deployar — não é "totalmente gerenciado" para equipe sem experiência.
+- **C)** Personalize recomenda itens a usuários individuais — não prevê demanda agregada por loja/SKU.
+- **D)** LLMs não fazem previsão quantitativa confiável de séries temporais — são para texto.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa precisa moderar conteúdo visual (imagens) em uma plataforma de mídia social. O sistema deve detectar automaticamente: nudez, violência e texto ofensivo em imagens. A equipe quer usar serviços pré-treinados sem criar modelos. Qual serviço AWS é MAIS adequado?
+
+A) Amazon Textract para extrair texto das imagens  
+B) Amazon Rekognition para moderação de conteúdo (nudez, violência) e detecção de texto  
+C) Amazon Comprehend para analisar o conteúdo textual das imagens  
+D) Amazon Bedrock Guardrails para filtrar conteúdo inadequado  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Rekognition para moderação de conteúdo e detecção de texto**
+
+✅ **Por que B está correta:** Rekognition oferece Content Moderation (detecta nudez, violência, drogas em imagens) E Text Detection (extrai texto de imagens). Ambos pré-treinados, sem necessidade de modelos customizados.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Textract extrai texto de DOCUMENTOS (PDFs, formulários), não faz moderação de conteúdo visual.
+- **C)** Comprehend analisa texto ESCRITO — não processa imagens diretamente.
+- **D)** Guardrails filtra texto de LLMs — não analisa imagens.
+
+</details>
+
+---
+
+### Questão 9
+
+Um banco quer implementar um sistema que automaticamente detecte transações fraudulentas em tempo real. A equipe de fraude NÃO tem cientistas de dados e quer um serviço que já inclua modelos pré-treinados para fraude, aceitando regras de negócio customizáveis. Qual serviço é MAIS adequado?
+
+A) Amazon SageMaker para treinar um modelo customizado de detecção de fraude  
+B) Amazon Fraud Detector — serviço gerenciado com modelos pré-treinados para fraude  
+C) Amazon GuardDuty para detectar ameaças de segurança  
+D) Amazon Macie para encontrar dados sensíveis  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Fraud Detector — serviço gerenciado com modelos pré-treinados para fraude**
+
+✅ **Por que B está correta:** Fraud Detector é um serviço gerenciado que combina modelos de ML pré-treinados pela AWS (baseados em 20+ anos de experiência da Amazon) com regras de negócio customizáveis. Não requer expertise em ML.
+
+❌ **Por que as outras estão erradas:**
+- **A)** SageMaker requer cientistas de dados para construir e treinar modelos — o cenário diz que a equipe NÃO tem essa expertise.
+- **C)** GuardDuty detecta ameaças de segurança em contas AWS (acesso não autorizado, malware) — não fraude em transações financeiras.
+- **D)** Macie detecta dados sensíveis (PII) armazenados no S3 — não é para detecção de fraude transacional.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma empresa global quer construir um chatbot multilíngue para atendimento ao cliente que entenda intents, extraia slots (informações) das frases do usuário e integre com backends existentes. O chatbot deve suportar voz e texto. Qual serviço AWS é projetado especificamente para isso?
+
+A) Amazon Comprehend para entender a intenção do texto  
+B) Amazon Lex para construir interfaces conversacionais com NLU  
+C) Amazon Polly para converter as respostas em fala  
+D) Amazon Q Business para responder perguntas sobre documentos internos  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Lex para construir interfaces conversacionais com NLU**
+
+✅ **Por que B está correta:** Lex é o serviço de construção de chatbots da AWS. Suporta: NLU (intents + slots), voz e texto, integração com Lambda/backends, e múltiplos idiomas. É a mesma tecnologia do Alexa.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Comprehend ANALISA texto (sentimento, entidades) mas não constrói chatbots conversacionais com fluxo de diálogo.
+- **C)** Polly converte texto em fala (TTS) — é um COMPONENTE de output, não uma plataforma de chatbot completa.
+- **D)** Q Business responde perguntas sobre documentos corporativos — não é um framework de chatbot com intents/slots/integração de backend.
+
+</details>

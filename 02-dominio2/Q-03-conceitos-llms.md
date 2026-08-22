@@ -162,3 +162,54 @@ Acertou todas? Se não, revise os conceitos em `C-03-conceitos-llms.md`.
 - Context window → limitação de tokens por interação (impacta documentos longos)
 - Embeddings → base da busca semântica e RAG
 - Max tokens → controle direto de custo e comprimento de saída
+
+
+---
+
+### Questão 7
+
+Uma empresa está configurando inferência no Bedrock e precisa entender a diferença entre temperature e top-p. Um desenvolvedor pergunta: "Se eu usar temperature = 0.7 E top-p = 0.9 ao mesmo tempo, o que acontece?" Qual é a resposta CORRETA?
+
+A) Apenas um pode ser usado por vez — o outro é ignorado  
+B) Ambos funcionam juntos: top-p filtra o vocabulário disponível, temperature ajusta a distribuição de probabilidade dentro desse vocabulário filtrado  
+C) Temperature e top-p são sinônimos — fazem a mesma coisa  
+D) Top-p anula o efeito de temperature em todos os cenários  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Ambos funcionam juntos — top-p filtra, temperature ajusta distribuição**
+
+✅ **Por que B está correta:** Top-p (nucleus sampling) seleciona o subconjunto de tokens mais prováveis cuja probabilidade cumulativa atinge p. Temperature ajusta quão "afiada" ou "suave" é a distribuição DENTRO desse subconjunto. Juntos, controlam diversidade de formas complementares.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Na maioria dos modelos no Bedrock, ambos podem ser configurados simultaneamente.
+- **C)** Fazem coisas diferentes — top-p corta vocabulário, temperature redistribui probabilidades.
+- **D)** Top-p não anula temperature — trabalham em camadas diferentes do processo de sampling.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa usa um LLM para geração de conteúdo criativo (poemas, slogans, brainstorming). As saídas estão muito previsíveis e repetitivas. Qual combinação de parâmetros é MAIS adequada para aumentar criatividade?
+
+A) Temperature = 0, Top-p = 0.1 — máximo foco e precisão  
+B) Temperature = 0.9, Top-p = 0.95 — alta diversidade e criatividade  
+C) Max tokens = 10 — respostas curtas são mais criativas  
+D) Temperature = 0, Max tokens = máximo — mais texto = mais criatividade  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Temperature = 0.9, Top-p = 0.95 — alta diversidade e criatividade**
+
+✅ **Por que B está correta:** Temperature alta (0.9) suaviza a distribuição de probabilidade, permitindo tokens menos prováveis. Top-p alto (0.95) considera 95% do vocabulário provável. Juntos, geram saídas variadas, surpreendentes e criativas.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Temperature 0 + Top-p 0.1 = máximo determinismo — o OPOSTO de criatividade.
+- **C)** Max tokens controla COMPRIMENTO, não criatividade. Respostas curtas podem ser igualmente previsíveis.
+- **D)** Temperature 0 gera o token mais provável a cada passo — texto longo mas repetitivo e previsível.
+
+</details>

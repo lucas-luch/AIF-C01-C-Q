@@ -128,3 +128,132 @@ D) Modelo A tem underfitting; Modelo B tem os dados enviesados
 
 </details>
 
+
+
+---
+
+### Questão 6
+
+Uma empresa treinou um modelo de deep learning com 500 milhões de parâmetros para classificar 3 categorias de produtos. O modelo atinge 99.8% no treino e 72% no teste. A equipe já tentou adicionar mais dados sem melhora significativa. Qual combinação de técnicas é MAIS provável de resolver o problema? **(Selecione DUAS)**
+
+A) Aumentar o número de camadas da rede neural  
+B) Aplicar dropout nas camadas intermediárias  
+C) Remover o conjunto de validação  
+D) Implementar early stopping baseado na performance de validação  
+E) Treinar por mais epochs para convergir melhor  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Respostas: B e D**
+
+✅ **Por que B está correta:** Dropout "desliga" neurônios aleatoriamente durante o treino, forçando a rede a não depender de padrões específicos — regularização que combate overfitting.
+
+✅ **Por que D está correta:** Early stopping interrompe o treino quando a validação para de melhorar — previne que o modelo continue memorizando dados de treino.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Mais camadas = mais parâmetros = mais capacidade de memorizar = PIORA o overfitting.
+- **C)** Sem validação, não há como detectar quando parar ou ajustar hiperparâmetros.
+- **E)** Mais epochs = mais tempo vendo os mesmos dados = mais memorização = mais overfitting.
+
+</details>
+
+---
+
+### Questão 7
+
+Uma equipe de ML está debatendo se deve usar um modelo de árvore de decisão simples ou uma rede neural profunda para prever aprovação de empréstimos. O regulador exige que cada decisão de negação seja explicável ao cliente. Qual consideração de trade-off é MAIS relevante para essa decisão?
+
+A) Redes neurais são sempre mais precisas, então devem ser usadas apesar da complexidade  
+B) O trade-off entre interpretabilidade (árvore) e capacidade preditiva (rede neural) é o fator decisivo dado o requisito regulatório  
+C) Árvores de decisão não conseguem lidar com dados tabulares complexos  
+D) Redes neurais são mais baratas de treinar que árvores de decisão  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) O trade-off entre interpretabilidade e capacidade preditiva é o fator decisivo dado o requisito regulatório**
+
+✅ **Por que B está correta:** O requisito regulatório de explicabilidade ("explicar cada negação") favorece modelos interpretáveis (árvore de decisão mostra o caminho lógico). Redes neurais podem ser mais precisas mas são "caixas pretas". O trade-off interpretabilidade vs performance é a consideração central.
+
+❌ **Por que as outras estão erradas:**
+- **A)** "Sempre mais precisas" é falso — para dados tabulares, gradient boosting (baseado em árvores) frequentemente supera deep learning.
+- **C)** Falso — árvores (especialmente ensemble como XGBoost) lidam muito bem com dados tabulares.
+- **D)** Falso — árvores de decisão são tipicamente muito mais baratas de treinar que redes neurais.
+
+</details>
+
+---
+
+### Questão 8
+
+Um modelo de classificação foi treinado com dataset onde 70% é classe A e 30% é classe B. Em produção, a distribuição mudou para 50%/50%. A performance em produção está pior que nos testes. Qual conceito MELHOR explica essa degradação?
+
+A) Overfitting — o modelo memorizou a proporção 70/30 do treino  
+B) Data drift — a distribuição dos dados de entrada mudou em relação ao treino  
+C) Concept drift — o significado das classes mudou  
+D) Underfitting — o modelo não tinha capacidade suficiente  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Data drift — a distribuição dos dados de entrada mudou em relação ao treino**
+
+✅ **Por que B está correta:** A proporção das classes mudou de 70/30 para 50/50 — a distribuição estatística dos dados em produção divergiu dos dados de treino. Isso é data drift (especificamente, prior probability shift).
+
+❌ **Por que as outras estão erradas:**
+- **A)** Overfitting causaria gap treino/teste antes do deploy — o cenário diz que testes foram bons.
+- **C)** Concept drift é quando a RELAÇÃO features→target muda (o que define A e B muda). Aqui apenas a proporção mudou.
+- **D)** Underfitting causaria performance ruim desde o início, não degradação após deploy.
+
+</details>
+
+---
+
+### Questão 9
+
+Uma empresa está treinando um modelo de regressão para prever preço de imóveis. O cientista de dados aplicou feature engineering: criou a feature "preço_por_m²" dividindo "preço" por "área". Qual problema POTENCIAL essa feature pode causar?
+
+A) Overfitting — features derivadas sempre causam overfitting  
+B) Data leakage — a feature contém informação do target (preço) que não estaria disponível em produção  
+C) Underfitting — features adicionais sempre simplificam o modelo  
+D) Multicolinearidade — mas isso melhora a performance  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Data leakage — a feature contém informação do target (preço) que não estaria disponível em produção**
+
+✅ **Por que B está correta:** Se o target é "preço" e a feature é "preço/área", você está vazando o target para o input. Em produção, não teremos o preço para calcular essa feature. O modelo terá performance artificialmente alta no treino e falhará em produção.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Features derivadas não causam overfitting automaticamente — o problema específico aqui é leakage.
+- **C)** Features adicionais AUMENTAM complexidade, não simplificam.
+- **D)** Multicolinearidade não é o problema principal — e ela geralmente NÃO melhora performance.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma equipe está selecionando hiperparâmetros para um modelo de gradient boosting. Testaram 50 combinações diferentes de learning rate, max depth e n_estimators no conjunto de validação, escolhendo a melhor. Qual risco essa abordagem apresenta?
+
+A) Underfitting — muitas combinações testadas simplificam demais o modelo  
+B) Overfitting ao conjunto de validação — a performance reportada pode não refletir dados novos  
+C) Data leakage — os hiperparâmetros vazam informação do teste  
+D) Concept drift — testar muitas combinações causa mudança no conceito  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Overfitting ao conjunto de validação — a performance reportada pode não refletir dados novos**
+
+✅ **Por que B está correta:** Ao testar 50 combinações e escolher a melhor no MESMO conjunto de validação, você pode estar selecionando hiperparâmetros que se adaptam especificamente a esse conjunto. O teste final em dados nunca vistos (conjunto de teste separado) é necessário para estimar performance real.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Testar combinações não simplifica o modelo — seleção de hiperparâmetros busca a melhor configuração.
+- **C)** Hiperparâmetros são definidos antes do treino — não "vazam" informação do teste. O risco é diferente.
+- **D)** Concept drift é mudança na relação dados→target ao longo do tempo — não é causado por seleção de hiperparâmetros.
+
+</details>

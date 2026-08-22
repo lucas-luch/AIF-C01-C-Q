@@ -150,3 +150,104 @@ D) Amazon Bedrock
 
 </details>
 
+
+
+---
+
+### Questão 7
+
+Uma empresa de consultoria quer que seus analistas possam fazer perguntas sobre relatórios financeiros internos usando linguagem natural. Os documentos estão no SharePoint e S3, e as respostas devem respeitar permissões de acesso existentes (cada analista só vê documentos de seus clientes). A equipe NÃO quer construir infraestrutura de busca customizada. Qual serviço é MAIS adequado?
+
+A) Amazon Kendra para busca empresarial com conectores nativos  
+B) Amazon Q Business com integração a SharePoint e S3 respeitando ACLs  
+C) Amazon Bedrock Knowledge Bases com vector database  
+D) Amazon Comprehend para análise dos documentos  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Q Business com integração a SharePoint e S3 respeitando ACLs**
+
+✅ **Por que B está correta:** Q Business é o assistente empresarial GenAI que integra nativamente com SharePoint, S3, Confluence etc., E respeita permissões de acesso (ACLs) existentes. Combina busca + geração + controle de acesso sem infraestrutura customizada.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Kendra faz busca inteligente, mas Q Business é mais completo (GenAI + integração + ACLs nativos). Kendra requer mais configuração para controle de acesso.
+- **C)** Knowledge Bases requer configurar vector database, chunking e indexação — mais infraestrutura que Q Business pré-integrado.
+- **D)** Comprehend analisa texto (sentimento, entidades) — não responde perguntas sobre documentos.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa está prototipando um assistente de vendas com IA generativa. O VP de vendas quer testar conceitos RAPIDAMENTE antes de aprovar orçamento. A equipe precisa de algo que NÃO requer conta AWS, é gratuito, e permite experimentar com prompts em minutos. Qual opção atende TODOS esses requisitos?
+
+A) Amazon Bedrock com free tier  
+B) PartyRock — playground gratuito sem conta AWS  
+C) Amazon SageMaker Studio Lab — ambiente gratuito de ML  
+D) Amazon Q Developer — assistente de código gratuito  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) PartyRock — playground gratuito sem conta AWS**
+
+✅ **Por que B está correta:** PartyRock é gratuito, não requer conta AWS, não requer cartão de crédito, e permite criar apps de IA generativa em minutos com interface visual. Perfeito para prototipagem rápida e validação de conceito.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Bedrock requer conta AWS + tem custo por token (mesmo com free tier, precisa de conta).
+- **C)** Studio Lab é para ML com notebooks Jupyter — requer cadastro e é focado em ciência de dados, não prototipagem de chatbot.
+- **D)** Q Developer é para geração de código em IDE — não é playground para testar chatbots de vendas.
+
+</details>
+
+---
+
+### Questão 9
+
+Uma empresa implantou um chatbot com Amazon Bedrock que processa dados de clientes (nomes, CPF, emails). O DPO (Data Protection Officer) exige que: (1) dados pessoais sejam mascarados nas respostas do chatbot, (2) o chatbot nunca discuta preços de concorrentes, e (3) respostas com conteúdo ofensivo sejam bloqueadas. Qual funcionalidade do Bedrock implementa TODOS esses requisitos?
+
+A) Bedrock Knowledge Bases com filtros de busca  
+B) Bedrock Guardrails com PII filters, denied topics e content filters  
+C) Bedrock Model Evaluation para detectar problemas  
+D) Bedrock Fine-tuning para ensinar o modelo a filtrar  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Bedrock Guardrails com PII filters, denied topics e content filters**
+
+✅ **Por que B está correta:** Guardrails oferece TODOS os três: PII filters (mascarar CPF/email), denied topics (bloquear discussão de concorrentes), content filters (bloquear conteúdo ofensivo). É a camada de proteção unificada do Bedrock.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Knowledge Bases buscam informação — não filtram PII, tópicos ou conteúdo.
+- **C)** Model Evaluation compara modelos em métricas — não filtra em tempo real.
+- **D)** Fine-tuning pode melhorar comportamento, mas não garante bloqueio absoluto — Guardrails é enforcement.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma empresa migrou de um chatbot tradicional (baseado em regras) para IA generativa com Amazon Bedrock. O custo mensal aumentou significativamente. O arquiteto quer reduzir custos SEM degradar qualidade para a maioria das interações. Qual estratégia é MAIS eficaz?
+
+A) Trocar para o modelo mais barato disponível, independente da qualidade  
+B) Usar modelo menor para tarefas simples (FAQ) e modelo maior apenas para tarefas complexas (raciocínio)  
+C) Reduzir a context window de todos os modelos  
+D) Desabilitar logging para economizar armazenamento  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Usar modelo menor para tarefas simples e modelo maior apenas para tarefas complexas**
+
+✅ **Por que B está correta:** Model routing — classificar a complexidade da tarefa e direcionar para o modelo adequado. FAQs simples funcionam com modelos menores/baratos (Titan, Haiku). Raciocínio complexo justifica modelos maiores/caros. Reduz custo médio sem degradar qualidade onde importa.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Modelo mais barato pode degradar qualidade em tarefas complexas — viola o requisito "sem degradar".
+- **C)** Context window é propriedade fixa do modelo — não é configurável para "reduzir custo".
+- **D)** Logging tem custo mínimo comparado a tokens — economia negligível. Além disso, pode violar compliance.
+
+</details>

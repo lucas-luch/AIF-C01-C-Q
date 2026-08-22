@@ -165,3 +165,56 @@ Acertou todas? Se não, revise os conceitos em `C-02-arquitetura-transformer.md`
 - Encoder-only vs Decoder-only vs Encoder-Decoder (e quais modelos usam qual)
 - O que é tokenização e como impacta custos
 - Por que positional encoding é necessário (perda de ordem no processamento paralelo)
+
+
+---
+
+### Questão 7
+
+Uma empresa precisa processar documentos jurídicos de 50.000 palavras em uma única chamada. O arquiteto nota que modelos baseados em Transformer padrão têm dificuldade com sequências muito longas porque a complexidade computacional da self-attention cresce quadraticamente. Qual é a implicação prática desse trade-off?
+
+A) Modelos com context window maiores são sempre mais baratos porque processam mais de uma vez  
+B) Modelos com context windows maiores requerem significativamente mais memória e compute, impactando custo e latência  
+C) O tamanho da context window não afeta custo nem performance  
+D) Documentos longos devem ser sempre divididos em chunks de 100 tokens para contornar a limitação  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Context windows maiores requerem mais memória e compute, impactando custo e latência**
+
+✅ **Por que B está correta:** Self-attention é O(n²) — dobrar o comprimento da sequência quadruplica o custo computacional. Modelos com 128K tokens de context processam muito mais que modelos de 8K, mas com custo significativo de memória, latência e preço por token.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Context window maior é geralmente MAIS caro, não mais barato — mais tokens = mais compute.
+- **C)** Afeta diretamente — é o principal trade-off de Transformers.
+- **D)** RAG com chunks é UMA solução, mas nem sempre adequada (contratos jurídicos podem precisar de contexto completo).
+
+</details>
+
+---
+
+### Questão 8
+
+Uma equipe está escolhendo um modelo para duas tarefas: (1) classificar emails em categorias, e (2) gerar respostas automáticas para clientes. Considerando as variantes de Transformer, qual combinação é MAIS adequada?
+
+A) Encoder-only para ambas as tarefas — mais eficiente  
+B) Encoder-only para classificação (compreensão) + Decoder-only para geração de respostas  
+C) Decoder-only para ambas — modelos modernos são multi-tarefa  
+D) RNN para classificação + Transformer para geração  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: C) Decoder-only para ambas — modelos modernos são multi-tarefa**
+
+✅ **Por que C está correta:** Na prática atual, modelos decoder-only (GPT, Claude, Llama) fazem AMBAS as tarefas via prompt: classificam texto E geram respostas. São suficientemente capazes para compreensão E geração. A distinção encoder/decoder era mais relevante academicamente.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Encoder-only (BERT) NÃO gera texto — é projetado para compreensão, não geração.
+- **B)** Tecnicamente correto academicamente, mas na prática moderna um único decoder-only faz ambas as tarefas com excelente qualidade.
+- **D)** RNNs são obsoletas para essa escala — Transformers são superiores em ambas as tarefas.
+
+**Nota para a prova:** A AWS testa se você sabe que LLMs modernos (decoder-only) são multi-tarefa. Na prática do Bedrock, um modelo faz classificação E geração.
+
+</details>

@@ -153,3 +153,107 @@ E) Precisam ser re-treinados do zero para cada novo caso de uso
 
 </details>
 
+
+
+---
+
+### Questão 7
+
+Uma empresa quer usar um Foundation Model para seu produto SaaS. O CTO precisa escolher entre um modelo proprietário via API (como Claude via Bedrock) e um modelo open-weight (como Llama). O principal requisito é manter controle total sobre onde os dados são processados e poder customizar o modelo internamente sem depender de terceiros. Qual opção é MAIS alinhada com esses requisitos?
+
+A) Modelo proprietário via API — mais fácil de implementar e manter  
+B) Modelo open-weight — permite execução em infraestrutura própria com controle total sobre dados e customização  
+C) Treinar um modelo do zero — única forma de ter controle total  
+D) Usar PartyRock — gratuito e sem dependência de API  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Modelo open-weight — permite execução em infraestrutura própria com controle total sobre dados e customização**
+
+✅ **Por que B está correta:** Open-weight (Llama, Mistral) permite baixar os pesos e executar onde quiser (sua VPC, on-premises, edge). Controle total sobre dados (não saem da sua infra) e customização (fine-tuning sem depender do provedor).
+
+❌ **Por que as outras estão erradas:**
+- **A)** API proprietária envia dados para infraestrutura de terceiros — menos controle sobre processamento.
+- **C)** Treinar do zero é possível mas impraticável (custo de milhões de dólares, meses de treino). Open-weight atende sem esse custo.
+- **D)** PartyRock é playground gratuito sem qualquer controle empresarial — não é para produção.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma equipe está avaliando Foundation Models para um assistente de código. O requisito principal é que o modelo gere código funcional em Python, Java e TypeScript com capacidade de entender e completar código existente. Quais características tornam um FM adequado para essa tarefa? **(Selecione DUAS)**
+
+A) O modelo foi pré-treinado com grandes volumes de código-fonte nessas linguagens  
+B) O modelo tem a menor context window possível para focar nas instruções  
+C) O modelo suporta geração autoregressiva token por token  
+D) O modelo usa apenas encoder (como BERT) para melhor compreensão  
+E) O modelo foi treinado exclusivamente em texto em inglês  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Respostas: A e C**
+
+✅ **Por que A está correta:** Para gerar código funcional, o FM precisa ter sido exposto a grandes volumes de código durante o pré-treinamento. Modelos como Codex, Code Llama e Claude foram treinados com repositórios de código.
+
+✅ **Por que C está correta:** Geração de código requer gerar sequências token por token (completar funções, gerar implementações). Modelos autoregressivos (decoder-only) são projetados para essa tarefa de geração.
+
+❌ **Por que as outras estão erradas:**
+- **B)** Context window MAIOR é melhor para código — precisa ver arquivos inteiros e dependências.
+- **D)** Encoder-only (BERT) é para COMPREENSÃO, não geração. Geração de código requer decoder.
+- **E)** Código usa múltiplas linguagens e inglês em comentários/docs — treinar só em inglês limitaria compreensão de código.
+
+</details>
+
+---
+
+### Questão 9
+
+Um gerente de produto pergunta por que a empresa deveria usar um Foundation Model pré-treinado em vez de treinar um modelo específico para cada tarefa. Qual é a principal vantagem econômica de FMs pré-treinados para empresas?
+
+A) FMs pré-treinados são sempre gratuitos para uso comercial  
+B) FMs eliminam completamente a necessidade de dados proprietários  
+C) FMs permitem adaptar um único modelo para múltiplas tarefas via prompt engineering ou fine-tuning, sem treinar do zero cada vez  
+D) FMs não requerem nenhum tipo de computação para funcionar  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: C) FMs permitem adaptar um único modelo para múltiplas tarefas sem treinar do zero cada vez**
+
+✅ **Por que C está correta:** O valor econômico central de FMs é o "pré-treinamento uma vez, adaptar muitas vezes". Em vez de gastar tempo e dinheiro treinando modelos separados para sumarização, classificação, geração, etc., um FM faz tudo via prompt engineering ou fine-tuning leve.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Muitos FMs têm custo (via API como Bedrock) ou restrições de licença comercial.
+- **B)** FMs reduzem necessidade de dados mas NÃO eliminam — fine-tuning e RAG ainda usam dados proprietários.
+- **D)** Inferência em FMs requer computação significativa (GPUs) — é um dos principais custos.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma empresa de e-commerce quer usar IA generativa para criar descrições de produtos, responder perguntas de clientes, e traduzir conteúdo para 5 idiomas. A equipe avalia se um ÚNICO Foundation Model pode fazer tudo ou se precisa de modelos separados. Qual afirmação é CORRETA sobre as capacidades de FMs modernos?
+
+A) FMs são single-task — cada tarefa requer um modelo separado treinado especificamente  
+B) FMs modernos são multi-task e multimodais — um único modelo pode gerar, responder, traduzir e mais, adaptado via prompts  
+C) FMs só funcionam em inglês e requerem Amazon Translate para outros idiomas  
+D) FMs não conseguem fazer tradução — essa tarefa requer modelos especializados  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) FMs modernos são multi-task e multimodais — um único modelo pode gerar, responder, traduzir e mais**
+
+✅ **Por que B está correta:** FMs como Claude, GPT, e Llama são treinados em dados massivos multilíngues e multi-tarefa. Um único modelo gera texto, responde perguntas, traduz, resume, classifica — tudo via instrução no prompt. Isso é o poder dos Foundation Models.
+
+❌ **Por que as outras estão erradas:**
+- **A)** O oposto — FMs são MULTI-task por design. É a principal vantagem sobre ML tradicional.
+- **C)** FMs modernos são multilíngues nativamente — treinados em dezenas de idiomas.
+- **D)** FMs conseguem traduzir com qualidade — são treinados em corpus multilíngue.
+
+</details>

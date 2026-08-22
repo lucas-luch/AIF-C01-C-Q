@@ -150,3 +150,129 @@ D) Amazon Transcribe
 
 </details>
 
+
+
+---
+
+### Questão 7
+
+Uma companhia aérea quer prever a demanda de passageiros para os próximos 6 meses em cada uma de suas 150 rotas, levando em conta sazonalidade (férias, feriados) e tendências históricas. A equipe de negócios não tem experiência em ML e quer a solução gerenciada com MENOR esforço operacional. Qual serviço AWS é MAIS adequado?
+
+A) Amazon SageMaker Autopilot para criar modelos de regressão automaticamente  
+B) Amazon Forecast para previsão gerenciada de séries temporais com sazonalidade  
+C) Amazon Personalize para recomendar rotas populares aos clientes  
+D) Amazon Bedrock para gerar previsões usando um Foundation Model  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Forecast para previsão gerenciada de séries temporais com sazonalidade**
+
+✅ **Por que B está correta:** Previsão temporal + sazonalidade + múltiplas séries (150 rotas) + gerenciado + sem expertise ML = Amazon Forecast. Projetado especificamente para forecasting com algoritmos que capturam automaticamente padrões sazonais.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Autopilot é AutoML tabular genérico — não é otimizado para séries temporais com sazonalidade.
+- **C)** Personalize gera recomendações de itens para usuários, não previsão de demanda agregada.
+- **D)** LLMs não são projetados para previsão quantitativa de séries temporais — podem gerar texto SOBRE previsões, mas não calcular forecasts confiáveis.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa de mídia social precisa analisar 50.000 comentários por hora para identificar automaticamente: (1) o sentimento (positivo/negativo/neutro), (2) os tópicos mencionados, e (3) o idioma de cada comentário. A equipe quer usar um ÚNICO serviço AWS sem treinar modelos. Qual serviço atende TODOS os três requisitos?
+
+A) Amazon Translate — traduz e detecta idioma  
+B) Amazon Comprehend — análise de sentimento, tópicos e detecção de idioma pré-treinados  
+C) Amazon Lex — chatbot com compreensão de linguagem natural  
+D) Amazon Textract — extração de texto de documentos  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Comprehend — análise de sentimento, tópicos e detecção de idioma pré-treinados**
+
+✅ **Por que B está correta:** Comprehend oferece TODOS: sentiment analysis, topic modeling, language detection — tudo pré-treinado, sem necessidade de criar modelos. Processa texto em escala.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Translate faz tradução e detecta idioma, mas NÃO faz análise de sentimento nem tópicos.
+- **C)** Lex constrói chatbots conversacionais — não analisa sentimento nem tópicos de texto em batch.
+- **D)** Textract extrai texto de imagens/PDFs — não analisa sentimento nem tópicos.
+
+</details>
+
+---
+
+### Questão 9
+
+Uma empresa de RH recebe 10.000 currículos em PDF por mês e precisa extrair automaticamente: nome do candidato, formação acadêmica, anos de experiência e habilidades técnicas — todos em campos estruturados de formulário. Qual combinação de serviços é MAIS eficiente?
+
+A) Amazon Rekognition para ler o PDF e Amazon Comprehend para extrair entidades  
+B) Amazon Textract para extrair texto/formulários e Amazon Comprehend para identificar entidades nomeadas  
+C) Amazon Transcribe para converter o PDF em texto e Amazon Translate para padronizar  
+D) Amazon Bedrock para ler e interpretar os PDFs com um LLM  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Textract para extrair texto/formulários e Amazon Comprehend para identificar entidades nomeadas**
+
+✅ **Por que B está correta:** Textract extrai texto e dados estruturados de PDFs (formulários, tabelas). Comprehend identifica entidades nomeadas (nomes, organizações, datas) no texto extraído. Juntos, resolvem o pipeline completo.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Rekognition é visão computacional (objetos, faces, moderação) — não lê PDFs nem extrai texto de documentos.
+- **C)** Transcribe converte ÁUDIO em texto — não processa PDFs. Translate traduz idiomas, não padroniza dados.
+- **D)** Bedrock com LLM funcionaria, mas não é a solução mais eficiente/custo-efetiva para extração estruturada em escala. Textract é otimizado para esse caso de uso específico.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma empresa de transporte quer criar um assistente virtual que permita aos motoristas reportar problemas usando voz (ex: "pneu furado na rodovia BR-101 km 45"). O assistente deve: (1) converter fala em texto, (2) extrair a localização e tipo de problema do texto, e (3) classificar a urgência. Qual sequência de serviços AWS é CORRETA?
+
+A) Amazon Polly → Amazon Comprehend → Amazon Lex  
+B) Amazon Transcribe → Amazon Comprehend → modelo de classificação customizado  
+C) Amazon Lex → Amazon Translate → Amazon Textract  
+D) Amazon Rekognition → Amazon Transcribe → Amazon Forecast  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Transcribe → Amazon Comprehend → modelo de classificação customizado**
+
+✅ **Por que B está correta:** (1) Transcribe converte fala→texto, (2) Comprehend extrai entidades (localização, tipo de problema) do texto, (3) classificação de urgência requer modelo customizado. A sequência é lógica e usa cada serviço na sua função.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Polly faz o INVERSO (texto→fala). Lex é chatbot, não classificador de urgência.
+- **C)** Lex é chatbot, Translate traduz idiomas, Textract lê documentos — nenhum processa voz nem classifica urgência.
+- **D)** Rekognition é visão computacional (imagens), Forecast é previsão temporal — irrelevantes para processamento de voz.
+
+</details>
+
+---
+
+### Questão 11
+
+Uma loja online quer identificar produtos que estão sendo retornados com frequência anormalmente alta em relação ao histórico. Não há categorias predefinidas de "retorno normal" vs "retorno anormal" — a equipe quer que o sistema aprenda o padrão histórico e alerte quando algo foge da norma. Qual tarefa de ML é MAIS adequada?
+
+A) Classificação binária — treinar com exemplos de "retorno normal" e "retorno anormal"  
+B) Regressão — prever o número exato de retornos por produto  
+C) Detecção de anomalias — identificar desvios do padrão histórico normal  
+D) Recomendação — sugerir produtos com menor taxa de retorno  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: C) Detecção de anomalias — identificar desvios do padrão histórico normal**
+
+✅ **Por que C está correta:** "Frequência anormalmente alta" + "sem categorias predefinidas" + "aprende o padrão e alerta desvios" = detecção de anomalias. O modelo define o que é "normal" e identifica outliers.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Classificação requer rótulos de "normal/anormal" predefinidos — o cenário diz que NÃO existem.
+- **B)** Regressão prevê um valor, mas não identifica se esse valor é "anormal" em relação ao histórico.
+- **D)** Recomendação sugere itens a usuários — problema completamente diferente de detectar retornos anormais.
+
+</details>

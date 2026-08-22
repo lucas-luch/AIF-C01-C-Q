@@ -128,3 +128,129 @@ E) Processamento de big data com Spark
 
 </details>
 
+
+
+---
+
+### Questão 6
+
+Uma empresa de mídia usa Amazon Bedrock para gerar resumos de artigos. Em horário de pico (8h-18h), processam 500 requisições/segundo com latência máxima de 200ms. Fora do pico, o volume cai para 5 requisições/segundo. A equipe quer otimizar custo mantendo a latência em pico. Qual modelo de preços do Bedrock é MAIS adequado?
+
+A) On-demand para todo o tráfego — paga por token sem compromisso  
+B) Provisioned Throughput para o horário de pico + on-demand fora do pico  
+C) Batch inference para processar todos os artigos de uma vez  
+D) Provisioned Throughput 24/7 para garantir latência consistente  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Provisioned Throughput para pico + on-demand fora do pico**
+
+✅ **Por que B está correta:** Provisioned Throughput garante capacidade reservada (latência consistente em pico). On-demand fora do pico evita pagar por capacidade ociosa. Combinação otimiza custo vs performance.
+
+❌ **Por que as outras estão erradas:**
+- **A)** On-demand em 500 req/s pode ter throttling e latência variável — não garante 200ms sob carga.
+- **C)** Batch é para processamento assíncrono — não atende latência de 200ms em tempo real.
+- **D)** Provisioned 24/7 paga por capacidade que fica 80% ociosa (5 req/s quando cai) — desperdício.
+
+</details>
+
+---
+
+### Questão 7
+
+Uma equipe de produto quer testar 3 Foundation Models diferentes no Bedrock para seu caso de uso de sumarização de contratos antes de escolher qual usar em produção. Precisam avaliar: qualidade do resumo, toxicidade da saída, e latência. Qual funcionalidade do Bedrock permite essa comparação sistematizada?
+
+A) Bedrock Guardrails — aplicar filtros e comparar comportamento  
+B) Bedrock Model Evaluation — comparar modelos com métricas automáticas e/ou humanas  
+C) Bedrock Knowledge Bases — testar com diferentes fontes de dados  
+D) Bedrock Agents — orquestrar chamadas aos 3 modelos  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Bedrock Model Evaluation — comparar modelos com métricas automáticas e/ou humanas**
+
+✅ **Por que B está correta:** Model Evaluation permite: selecionar múltiplos modelos, definir métricas (ROUGE para qualidade, toxicidade, latência), usar datasets customizados, e gerar relatório comparativo. Projetado exatamente para seleção de modelo.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Guardrails filtram conteúdo em produção — não comparam performance de modelos.
+- **C)** Knowledge Bases implementam RAG — não comparam modelos entre si.
+- **D)** Agents executam ações — não avaliam nem comparam modelos.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa de healthcare quer usar Bedrock para responder perguntas médicas dos pacientes baseando-se APENAS em protocolos aprovados pela equipe médica. Os protocolos são atualizados mensalmente. Qual arquitetura no Bedrock atende esse requisito SEM re-treinar o modelo?
+
+A) Fine-tuning mensal com os novos protocolos  
+B) Knowledge Bases conectada ao S3 com os protocolos + re-indexação mensal  
+C) Guardrails para bloquear respostas não-médicas  
+D) Agents para chamar APIs do sistema hospitalar  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Knowledge Bases conectada ao S3 com os protocolos + re-indexação mensal**
+
+✅ **Por que B está correta:** Knowledge Bases implementa RAG gerenciado. Protocolos no S3 são indexados (chunking + embeddings). Quando atualizados, basta re-indexar — o modelo base permanece o mesmo. Respostas são ancoradas nos documentos reais.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Fine-tuning mensal é caro, demorado, e não garante que o modelo use APENAS os protocolos (pode alucinar).
+- **C)** Guardrails filtram conteúdo indesejado mas não trazem informação dos protocolos para as respostas.
+- **D)** Agents executam ações em sistemas — o cenário é busca de informação, não execução de ações.
+
+</details>
+
+---
+
+### Questão 9
+
+Um cliente do Bedrock pergunta: "Se eu fizer fine-tuning de um modelo no Bedrock, outra empresa que use o mesmo modelo base terá acesso ao meu modelo customizado?" Qual é a resposta CORRETA sobre isolamento de dados no Bedrock?
+
+A) Sim — modelos fine-tuned são compartilhados para melhorar o modelo base  
+B) Não — o modelo customizado é privado, armazenado na sua conta, e inacessível para outros clientes ou o provedor do modelo  
+C) Depende — modelos open-weight são compartilhados, proprietários são isolados  
+D) Não existe fine-tuning no Bedrock — apenas prompt engineering  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Não — o modelo customizado é privado e inacessível para outros**
+
+✅ **Por que B está correta:** No Bedrock, modelos fine-tuned são artefatos privados da conta do cliente. Dados de treino, modelos resultantes e logs permanecem isolados. Provedores de modelo NÃO têm acesso à conta de deployment do Bedrock.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Bedrock garante que dados e modelos customizados NUNCA são compartilhados com outros clientes ou provedores.
+- **C)** O isolamento é o mesmo independente do modelo base (open-weight ou proprietário) — dentro do Bedrock, é sempre privado.
+- **D)** Bedrock OFERECE fine-tuning — é uma funcionalidade disponível para múltiplos modelos.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma empresa está planejando custos para sua aplicação de IA generativa no Bedrock. A aplicação recebe perguntas curtas (~50 tokens) e gera respostas longas (~500 tokens). O gerente financeiro pergunta como a cobrança funciona. Qual afirmação é CORRETA sobre o modelo de preços on-demand do Bedrock?
+
+A) Cobra um preço fixo por requisição independente do tamanho  
+B) Cobra separadamente por tokens de entrada e tokens de saída, com saída geralmente mais cara  
+C) Cobra apenas por tokens de entrada — a saída é gratuita  
+D) Cobra por minuto de processamento do modelo  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Cobra separadamente por tokens de entrada e saída, com saída geralmente mais cara**
+
+✅ **Por que B está correta:** Bedrock on-demand cobra por 1.000 tokens de input E por 1.000 tokens de output separadamente. Tokens de output são tipicamente 3-5x mais caros que input. No cenário, 500 tokens de saída custam significativamente mais que 50 de entrada.
+
+❌ **Por que as outras estão erradas:**
+- **A)** NÃO é preço fixo por requisição — varia com volume de tokens (uma resposta de 50 tokens custa menos que uma de 500).
+- **C)** Saída NÃO é gratuita — é a parte MAIS cara da cobrança.
+- **D)** NÃO cobra por minuto — cobra por token processado (model on-demand) ou por hora de capacidade reservada (Provisioned).
+
+</details>

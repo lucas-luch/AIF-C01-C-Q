@@ -125,3 +125,143 @@ D) AWS Lambda
 
 </details>
 
+
+
+---
+
+### Questão 6
+
+Uma empresa processa 1 milhão de emails de suporte por mês e quer classificar cada um em 5 categorias. A latência não é crítica (pode levar horas). O custo é a principal preocupação. Qual estratégia no Bedrock minimiza o custo TOTAL?
+
+A) Real-time inference com o modelo mais barato disponível  
+B) Batch inference para processar em lote com desconto sobre preço on-demand  
+C) Provisioned Throughput com capacidade reservada 24/7  
+D) Múltiplas chamadas on-demand paralelas para processar rapidamente  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Batch inference para processar em lote com desconto**
+
+✅ **Por que B está correta:** Sem requisito de latência + volume alto + custo como prioridade = batch inference. Bedrock batch oferece desconto significativo sobre on-demand e processa grandes volumes assincronamente.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Real-time on-demand custa mais por token que batch — desnecessário sem requisito de latência.
+- **C)** Provisioned Throughput é para latência consistente e alta demanda contínua — overkill e caro para processamento que pode levar horas.
+- **D)** Chamadas paralelas on-demand = custo on-demand total sem desconto de batch.
+
+</details>
+
+---
+
+### Questão 7
+
+Uma empresa está decidindo entre usar Amazon Comprehend (serviço pré-treinado de NLP) ou Amazon Bedrock com um LLM para classificar sentimento de reviews. Os reviews são simples (1-2 frases) e a classificação é padrão (positivo/negativo/neutro). Qual opção é MAIS custo-efetiva para esse caso?
+
+A) Bedrock com Claude — mais inteligente e preciso para qualquer tarefa de NLP  
+B) Amazon Comprehend — serviço otimizado para sentiment analysis a custo menor que LLMs  
+C) Treinar modelo customizado no SageMaker — máximo controle  
+D) Bedrock com modelo menor para reduzir custo por token  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Amazon Comprehend — serviço otimizado para sentiment analysis a custo menor**
+
+✅ **Por que B está correta:** Para análise de sentimento padrão em textos curtos, Comprehend é mais barato que LLMs (não precisa de geração de texto — apenas classifica). É um serviço purpose-built, otimizado para essa tarefa específica.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Claude é muito capaz, mas usar um LLM para classificação simples é like "matar formiga com canhão" — caro e desnecessário.
+- **C)** SageMaker customizado requer expertise ML, dados de treino, manutenção — overkill para sentimento padrão.
+- **D)** Mesmo modelo menor no Bedrock será mais caro que Comprehend para classificação simples — LLMs são para geração, não tarefas simples de NLP.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa de seguros usa IA generativa para redigir propostas de seguro personalizadas. Cada proposta precisa incluir dados do cliente (nome, endereço, valor do bem) que estão no CRM. O modelo NÃO deve alucinar dados do cliente. Qual arquitetura garante dados corretos nas propostas?
+
+A) Fine-tuning do modelo com exemplos de propostas anteriores  
+B) RAG conectado ao CRM para buscar dados reais do cliente e injetá-los no contexto  
+C) Prompt engineering com instruções detalhadas sobre formato da proposta  
+D) Temperature = 0 para eliminar aleatoriedade nos dados  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) RAG conectado ao CRM para buscar dados reais do cliente**
+
+✅ **Por que B está correta:** Dados específicos do cliente (nome, endereço, valor) DEVEM vir de fonte real (CRM), não da memória do modelo. RAG busca os dados corretos e injeta no contexto — o modelo gera a proposta usando dados verificáveis.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Fine-tuning ensina estilo/formato, mas NÃO tem acesso a dados atuais de clientes específicos.
+- **C)** Prompt engineering define formato, mas sem dados reais do CRM, o modelo inventaria nomes/endereços.
+- **D)** Temperature 0 torna a geração determinística, mas o modelo ainda pode gerar dados incorretos se não tiver a informação correta no contexto.
+
+</details>
+
+---
+
+### Questão 9
+
+Uma empresa está avaliando o custo-benefício de diferentes abordagens para seu chatbot. A tabela mostra custo e qualidade medidos:
+
+| Abordagem | Custo/mês | Qualidade (escala 1-10) |
+|-----------|-----------|------------------------|
+| Modelo grande (Claude Sonnet) | $15.000 | 9.2 |
+| Modelo médio (Haiku) | $3.000 | 7.8 |
+| Modelo pequeno (Titan Lite) | $800 | 6.1 |
+
+A equipe quer qualidade ≥ 7.5 com MENOR custo possível. Qual é a escolha MAIS racional?
+
+A) Claude Sonnet — qualidade máxima justifica o investimento  
+B) Haiku — atende o requisito de qualidade (7.8 ≥ 7.5) com custo 5x menor que Sonnet  
+C) Titan Lite — menor custo é sempre a melhor escolha  
+D) Combinar os três modelos em todas as interações  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Haiku — atende o requisito com custo 5x menor**
+
+✅ **Por que B está correta:** O requisito é qualidade ≥ 7.5. Haiku atinge 7.8 (acima do threshold) por $3.000/mês. Sonnet é 5x mais caro para ganho marginal (9.2 vs 7.8) que o requisito não exige. A regra é: menor modelo que atende os requisitos.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Qualidade acima do requisito a 5x do custo é desperdício — o requisito é ≥ 7.5, não "máxima".
+- **C)** Titan Lite (6.1) NÃO atende o requisito de ≥ 7.5 — economia que viola requisitos não é "melhor escolha".
+- **D)** Usar três modelos em todas as interações é ineficiente e mais caro que qualquer opção individual.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma empresa quer implementar IA generativa para três casos de uso diferentes. Qual combinação CORRETA de serviço AWS para cada caso?
+
+| Caso de uso | Serviço |
+|-------------|---------|
+| 1. Gerar relatórios personalizados | ? |
+| 2. Detectar sentimento de reviews | ? |
+| 3. Transcrever reuniões gravadas | ? |
+
+A) 1: Bedrock, 2: Bedrock, 3: Bedrock — um serviço para tudo  
+B) 1: Bedrock (geração de texto), 2: Comprehend (NLP pré-treinado), 3: Transcribe (speech-to-text)  
+C) 1: SageMaker, 2: SageMaker, 3: SageMaker — máximo controle  
+D) 1: Q Business, 2: Rekognition, 3: Polly  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) Bedrock para geração, Comprehend para sentimento, Transcribe para transcrição**
+
+✅ **Por que B está correta:** Cada serviço é otimizado para sua tarefa: Bedrock (IA generativa — gera texto), Comprehend (NLP — classifica sentimento sem LLM), Transcribe (converte áudio→texto). Usar o serviço purpose-built é mais eficiente e geralmente mais barato.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Bedrock PODE fazer tudo, mas usar LLM para sentimento simples ou transcrição de áudio é ineficiente e caro.
+- **C)** SageMaker requer expertise ML para cada caso — desnecessário quando serviços gerenciados existem.
+- **D)** Q Business é para perguntas sobre documentos internos; Rekognition é visão computacional; Polly é text-to-speech. Nenhum se encaixa.
+
+</details>

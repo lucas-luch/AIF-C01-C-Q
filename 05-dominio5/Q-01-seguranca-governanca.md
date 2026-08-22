@@ -153,3 +153,135 @@ D) AWS Trusted Advisor
 
 </details>
 
+
+
+---
+
+### Questão 7
+
+Uma empresa multinacional processa dados de clientes europeus com Amazon Bedrock. O DPO exige que os dados nunca saiam da região europeia E que haja evidência de compliance com GDPR para auditorias. Quais serviços/configurações implementam AMBOS os requisitos? **(Selecione DUAS)**
+
+A) Usar Bedrock na região eu-west-1 (Irlanda) para manter dados na Europa  
+B) Amazon Macie para encontrar e classificar dados pessoais nos buckets S3  
+C) AWS Artifact para acessar relatórios de compliance e acordos de processamento de dados  
+D) Amazon Forecast para prever riscos de compliance  
+E) AWS DeepRacer para treinar modelos de detecção de risco  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Respostas: A e C**
+
+✅ **Por que A está correta:** Usar Bedrock em região europeia garante que dados são processados e armazenados na UE — atende requisito de residência de dados do GDPR.
+
+✅ **Por que C está correta:** AWS Artifact fornece relatórios de compliance (SOC, ISO, GDPR DPA) para auditorias — evidência documentada de que a AWS atende requisitos regulatórios.
+
+❌ **Por que as outras estão erradas:**
+- **B)** Macie detecta PII no S3 — útil mas não garante residência de dados nem fornece relatórios de compliance.
+- **D)** Forecast é previsão de séries temporais — irrelevante para compliance.
+- **E)** DeepRacer é plataforma educacional de RL — irrelevante.
+
+</details>
+
+---
+
+### Questão 8
+
+Uma empresa de fintech precisa implementar o princípio do menor privilégio para acesso ao Amazon Bedrock. Diferentes equipes devem ter diferentes níveis de acesso: desenvolvedores podem invocar modelos; cientistas de dados podem fazer fine-tuning; auditores podem apenas ler logs. Qual serviço implementa esse controle granular?
+
+A) Amazon Bedrock Guardrails para controlar o que cada equipe pode perguntar  
+B) AWS IAM com policies específicas por role (InvokeModel, CreateModelCustomizationJob, GetModelInvocationLog)  
+C) VPC Security Groups para separar tráfego por equipe  
+D) AWS KMS para criptografar dados por equipe  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: B) AWS IAM com policies específicas por role**
+
+✅ **Por que B está correta:** IAM permite criar roles com permissions granulares por ação do Bedrock: `bedrock:InvokeModel` para devs, `bedrock:CreateModelCustomizationJob` para cientistas, `bedrock:GetModelInvocationLogging*` para auditores. É o mecanismo de autorização da AWS.
+
+❌ **Por que as outras estão erradas:**
+- **A)** Guardrails filtram CONTEÚDO das respostas — não controlam QUEM pode fazer qual operação.
+- **C)** Security Groups controlam tráfego de rede (IPs/portas) — não permissões de API.
+- **D)** KMS gerencia chaves de criptografia — não controla acesso a operações específicas.
+
+</details>
+
+---
+
+### Questão 9
+
+Uma empresa está usando Amazon Bedrock e quer habilitar logging de todas as invocações (prompts e respostas) para auditoria interna. Porém, os prompts contêm dados sensíveis de clientes. Qual configuração garante logging para auditoria SEM expor dados sensíveis a equipes não-autorizadas?
+
+A) Habilitar Model Invocation Logging com output para S3 + criptografia com chave KMS gerenciada com acesso restrito  
+B) Desabilitar logging completamente para proteger dados  
+C) Habilitar CloudTrail — que já registra prompts automaticamente  
+D) Usar Guardrails para mascarar PII antes do logging  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: A) Model Invocation Logging com S3 + criptografia KMS com acesso restrito**
+
+✅ **Por que A está correta:** Model Invocation Logging é opt-in e envia logs (prompts + responses) para S3 e/ou CloudWatch. Criptografia com KMS + IAM policies restritivas garante que apenas auditores autorizados acessem. Logging COM proteção.
+
+❌ **Por que as outras estão erradas:**
+- **B)** Desabilitar logging viola o requisito de auditoria — não é solução.
+- **C)** CloudTrail registra CHAMADAS de API (quem, quando, parâmetros), mas NÃO os prompts/respostas em si.
+- **D)** Guardrails mascara PII nas respostas ao USUÁRIO — não filtra o que é armazenado nos logs de invocação.
+
+</details>
+
+---
+
+### Questão 10
+
+Uma empresa está definindo a estratégia de governança para seu pipeline de ML. O CISO exige rastreabilidade completa: saber quais dados treinaram qual versão do modelo, quem aprovou o deploy, e qual modelo está servindo em produção. Quais serviços AWS implementam essa rastreabilidade end-to-end? **(Selecione DUAS)**
+
+A) SageMaker Model Registry — versiona modelos com status de aprovação e metadata de linhagem  
+B) Amazon S3 Versioning — versiona os dados de treino  
+C) SageMaker ML Lineage Tracking — rastreia relação entre dados, modelos e endpoints  
+D) Amazon CloudFront — distribui o modelo globalmente  
+E) Amazon Rekognition — analisa imagens dos dashboards  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Respostas: A e C**
+
+✅ **Por que A está correta:** Model Registry versiona modelos, gerencia status (Pending/Approved/Rejected) com quem aprovou, e conecta ao endpoint de produção — rastreabilidade de modelo.
+
+✅ **Por que C está correta:** ML Lineage Tracking rastreia automaticamente as relações: quais dados → geraram qual artefato → treinaram qual modelo → deployado em qual endpoint. Rastreabilidade completa end-to-end.
+
+❌ **Por que as outras estão erradas:**
+- **B)** S3 Versioning versiona objetos, mas não conecta dados a modelos ou endpoints — é peça isolada sem linhagem.
+- **D)** CloudFront é CDN para distribuição de conteúdo web — irrelevante para ML governance.
+- **E)** Rekognition é visão computacional — irrelevante.
+
+</details>
+
+---
+
+### Questão 11
+
+Uma empresa quer garantir que dados usados para fine-tuning no Bedrock estejam criptografados tanto em repouso (armazenados no S3) quanto em trânsito (sendo enviados ao Bedrock). Qual combinação garante criptografia em AMBOS os cenários?
+
+A) S3 Server-Side Encryption (SSE-KMS) para repouso + TLS 1.2+ para trânsito  
+B) Apenas HTTPS é suficiente para ambos cenários  
+C) Apenas VPC Endpoints garantem criptografia completa  
+D) Amazon Macie criptografa dados automaticamente quando detecta PII  
+
+<details>
+<summary>🔍 Ver resposta</summary>
+
+**Resposta: A) SSE-KMS para repouso + TLS 1.2+ para trânsito**
+
+✅ **Por que A está correta:** SSE-KMS criptografa dados armazenados no S3 (at rest) com chaves gerenciadas. TLS 1.2+ criptografa dados sendo transmitidos (in transit) entre S3/aplicação e Bedrock. Juntos cobrem ambos os estados.
+
+❌ **Por que as outras estão erradas:**
+- **B)** HTTPS (TLS) protege dados em trânsito, mas NÃO dados armazenados no S3.
+- **C)** VPC Endpoints mantêm tráfego na rede AWS (privacidade) mas não são mecanismo de criptografia.
+- **D)** Macie DETECTA dados sensíveis mas NÃO os criptografa — é ferramenta de discovery, não proteção.
+
+</details>
